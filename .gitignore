@@ -1,5 +1,5 @@
 # credentials
-./lib/config.dart
+/lib/config.dart
 
 # Miscellaneous
 *.class

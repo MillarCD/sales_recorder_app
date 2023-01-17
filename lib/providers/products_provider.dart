@@ -19,6 +19,7 @@ class ProductProvider extends ChangeNotifier {
       Product(name: 'Lapiz grafito', brand: 'Colon', price: 100, code: 123),
       Product(name: 'Cartulina', price: 200, code: 432),
       Product(name: 'Plumon', brand: 'Bic', price: 100, code: 1),
+      Product(name: 'Carton piedra grande', brand: 'torre', price: 550, code: 1789234),
     ];
 
     notifyListeners();

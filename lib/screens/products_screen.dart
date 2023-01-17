@@ -28,7 +28,7 @@ class ProductsScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.shopping_cart_outlined),
         onPressed: () {
-          // TODO: navegar a la pantalla de ventas
+          Navigator.pushNamed(context, 'sale');
         },
       ),
     );

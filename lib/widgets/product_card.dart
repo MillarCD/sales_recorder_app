@@ -13,16 +13,14 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.amber[600],
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         child: Row(
           children: [
             Expanded(
               flex: 2,
               child: Container(
-                color: Colors.red,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -37,7 +35,6 @@ class ProductCard extends StatelessWidget {
             Expanded(
               flex: 1,
               child: Container(
-                color: Colors.blue,
                 child: Center(child: Text('\$${product.price}', style: const TextStyle(fontSize: 23, fontWeight: FontWeight.bold))),
               ),
             )

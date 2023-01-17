@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'package:register_sale_app/providers/products_provider.dart';
-
-
+import 'package:register_sale_app/providers/sale_provider.dart';
 import 'package:register_sale_app/screens/screens.dart';
 
 void main() {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<ProductProvider>(create: (context) => ProductProvider()),
+      ChangeNotifierProvider<SaleProvider>(create:(context) => SaleProvider()),
     ],
     child: const MyApp()
   ));
