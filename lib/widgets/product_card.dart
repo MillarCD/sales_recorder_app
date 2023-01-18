@@ -9,6 +9,7 @@ class ProductCard extends StatelessWidget {
   }) : super(key: key);
 
   final Product product;
+  
 
   @override
   Widget build(BuildContext context) {
