@@ -11,8 +11,18 @@ class SaleProvider extends ChangeNotifier {
     Product(name: 'Goma', price: 400, code: 987324): 2,
     Product(name: 'Goma Eva', price: 250, code: 987324): 10,
   };
-
   Map<Product, int> get products => _products;
+
+  int? getTotal() {
+    if (_products.isEmpty) return null;
+
+    int total = 0;
+
+    for (var entry in _products.entries) {
+      total += entry.key.price * entry.value;
+    }
+    return total;
+  }
 
   void addOneProduct(Product product) {
     if (_products[product] == null) return;
@@ -30,5 +40,12 @@ class SaleProvider extends ChangeNotifier {
   void addNewProduct(Product product) {
     _products.addAll({product: 1});
     notifyListeners();
+  }
+  bool deleteProduct(Product product) {
+    final int? res = _products.remove(product);
+    if(res == null) return false;
+    
+    notifyListeners();
+    return true;
   }
 }

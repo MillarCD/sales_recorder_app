@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:register_sale_app/models/product.dart';
 import 'package:register_sale_app/providers/sale_provider.dart';
+import 'package:register_sale_app/widgets/dismissible_background.dart';
 import 'package:register_sale_app/widgets/register_dialog.dart';
 import 'package:register_sale_app/widgets/selected_product_card.dart';
 
@@ -29,7 +30,16 @@ class SaleScreen extends StatelessWidget {
                 children: [
           
                   ...saleProvider.products.entries.map((MapEntry<Product, int> entry) {
-                    return SelectedProductCard(product: entry.key, quantity: entry.value);
+                    return Dismissible(
+                      key: UniqueKey(),
+                      background: const DismissibleBackGround(alignment: Alignment.centerLeft),
+                      secondaryBackground: const DismissibleBackGround(alignment: Alignment.centerRight),
+                      confirmDismiss: (direction) async {
+                        final bool res = saleProvider.deleteProduct(entry.key);
+                        return res;
+                      },
+                      child: SelectedProductCard(product: entry.key, quantity: entry.value)
+                    );
                   }),
           
                   SizedBox(
@@ -64,14 +74,24 @@ class SaleScreen extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 10),
               child: ElevatedButton(
                 onPressed: () async {
-                  // TODO: desplegar modal de confirmacion
                   print('[SALE SCREEN] registrar venta');
-                  final res = await showDialog(
+                  final int? total = saleProvider.getTotal();
+                  if (total == null) return;
+
+                  final bool? res = await showDialog(
                     context: context,
-                    builder: (context) => const RegisterDialog(total: 10),
+                    // TODO: pasar total
+                    // TODO: confirmar que se añadieron productos
+                    builder: (context) => RegisterDialog(total: total),
                   );
 
-                  print('[REGISTER SALE] res: $res');
+                  if (res == null || !res) {
+                    print('[REGISTER SALE] $res: no pasa nada');
+                    return;
+                  }
+
+                  // TODO: registrar venta con googleapi y borrar datos de saleProvider
+                  print('[REGISTER SALE] $res: registrar venta y resetear saleProvider');
                 },
                 child: const Text('Registrar Venta', style: TextStyle(fontSize: 21))
               ),

@@ -15,7 +15,7 @@ class RegisterDialog extends StatelessWidget {
       content: Text('Total: \$$total'),
       actions: [
         TextButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.pop(context, false),
           child: const Text('cancelar'),
         ),
         TextButton(
