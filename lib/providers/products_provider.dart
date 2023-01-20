@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:register_sale_app/models/product.dart';
+import 'package:register_sale_app/services/spreadsheet_service.dart';
 
 class ProductProvider extends ChangeNotifier {
   List<Product>? _products;
@@ -12,16 +13,12 @@ class ProductProvider extends ChangeNotifier {
   
 
   Future<void> loadProducts() async {
-    // TODO: cargar productos desde la api
-    await Future.delayed(const Duration(seconds: 3));
+    List<List<String>>? productsList = await SpreadsheetService.ssService.getRows('productos');
+    if (productsList == null) return;
 
-    _products = [
-      Product(name: 'Lapiz grafito', brand: 'Colon', price: 100, code: 123),
-      Product(name: 'Cartulina', price: 200, code: 432),
-      Product(name: 'Plumon', brand: 'Bic', price: 100, code: 1),
-      Product(name: 'Carton piedra grande', brand: 'torre', price: 550, code: 1789234),
-    ];
-
+    productsList = productsList.sublist(1,productsList.length);
+    _products = [...productsList.map((list) => Product.fromList(list))];
+   
     notifyListeners();
   }
 

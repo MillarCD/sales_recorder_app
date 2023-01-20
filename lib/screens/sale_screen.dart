@@ -23,7 +23,6 @@ class SaleScreen extends StatelessWidget {
           SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Container(
-              color: Colors.greenAccent,
               width: double.infinity,
               padding: const EdgeInsets.all(10),
               child: Column(
@@ -80,8 +79,6 @@ class SaleScreen extends StatelessWidget {
 
                   final bool? res = await showDialog(
                     context: context,
-                    // TODO: pasar total
-                    // TODO: confirmar que se añadieron productos
                     builder: (context) => RegisterDialog(total: total),
                   );
 
@@ -92,6 +89,7 @@ class SaleScreen extends StatelessWidget {
 
                   // TODO: registrar venta con googleapi y borrar datos de saleProvider
                   print('[REGISTER SALE] $res: registrar venta y resetear saleProvider');
+                  await saleProvider.registerSale(); 
                 },
                 child: const Text('Registrar Venta', style: TextStyle(fontSize: 21))
               ),
