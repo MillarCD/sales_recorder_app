@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
         'products': (context) => const ProductsScreen(),
         'sale': (context) => const SaleScreen(),
         'select_product': (context) => const SelectProductScreen(),
+        'barcode_reader': (context) => const BarcodeReaderScreen(),
       },
     );
   }

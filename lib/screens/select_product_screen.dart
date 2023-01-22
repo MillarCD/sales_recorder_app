@@ -17,21 +17,27 @@ class SelectProductScreen extends StatelessWidget {
     final SaleProvider saleProvider = Provider.of<SaleProvider>(context);
     
     return Scaffold(
-      body: (productProvider.products == null) 
+      body: (productProvider.products.isEmpty) 
         ? const Center(child: CircularProgressIndicator())
         : ListView.builder(
           physics: const BouncingScrollPhysics(),
-          itemCount: productProvider.products!.length,
+          itemCount: productProvider.products.length,
           itemBuilder: (context, index) {
-            final Product product = productProvider.products![index];
+            final Product product = productProvider.products[index];
+            final bool isRegister = saleProvider.isRegister(product.code);
 
             return GestureDetector(
-              child: ProductCard(product: product),
-              onTap:() {
-                print('[GESTURE DETECTOR] product: ${product.name}');
-                saleProvider.addNewProduct(product);
-                Navigator.pop(context);
-              },
+              onTap: (isRegister)
+                ? null
+                : () {
+                  print('[GESTURE DETECTOR] product: ${product.name}');
+                  saleProvider.addNewProduct(product);
+                  Navigator.pop(context);
+                },
+              child: ProductCard(
+                product: product,
+                color: (isRegister) ? Colors.black.withOpacity(0.1) :  null,
+              ),
             );
           },
         )

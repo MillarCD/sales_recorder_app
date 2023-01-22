@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'package:register_sale_app/providers/sale_provider.dart';
@@ -31,6 +32,7 @@ class ProductQuantity extends StatelessWidget {
             child: IconButton(
               onPressed: () {
                 print('PRODUCT QUANTITY: se saco un producto');
+                HapticFeedback.mediumImpact();
                 saleProvider.removeOneProduct(product);
               },
               icon: const Icon(Icons.remove),
@@ -45,6 +47,7 @@ class ProductQuantity extends StatelessWidget {
             child: IconButton(
               onPressed: () {
                 print('PRODUCT QUANTITY: se añadio un producto');
+                HapticFeedback.mediumImpact();
                 saleProvider.addOneProduct(product);
               },
               icon: const Icon(Icons.add),

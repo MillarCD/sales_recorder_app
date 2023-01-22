@@ -4,14 +4,7 @@ import 'package:register_sale_app/models/product.dart';
 import 'package:register_sale_app/services/spreadsheet_service.dart';
 
 class SaleProvider extends ChangeNotifier {
-  final Map<Product, int> _products = {
-    Product(name: 'Cuaderno Universitario', brand: 'FaberCastle', price: 2500, code: 1234): 3,
-    Product(name: 'Compas', price: 370, code: 987324): 6,
-    Product(name: 'Cartulina', price: 370, code: 987324): 6,
-    Product(name: 'Regla', price: 679, code: 987324): 1,
-    Product(name: 'Goma', price: 400, code: 987324): 2,
-    Product(name: 'Goma Eva', price: 250, code: 987324): 10,
-  };
+  final Map<Product, int> _products = {};
   Map<Product, int> get products => _products;
 
   int? getTotal() {
@@ -39,6 +32,8 @@ class SaleProvider extends ChangeNotifier {
   }
 
   void addNewProduct(Product product) {
+    if (isRegister(product.code)) return;
+    
     _products.addAll({product: 1});
     notifyListeners();
   }
@@ -50,24 +45,30 @@ class SaleProvider extends ChangeNotifier {
     return true;
   }
 
+  bool isRegister(int code) {
+    final List<MapEntry> res = [..._products.entries.where((entry) => entry.key.code == code)];
+    if (res.isEmpty) return false;
+    return true;
+  }
+
   Future<bool> registerSale() async {
     const String sheetName = 'ingresos';
     final List<String> lastRow = await SpreadsheetService.ssService.getLastRow(sheetName, length: 1);
-    final int numVenta = 1 + int.parse(
-      lastRow.isEmpty
-        ? '0'
-        : lastRow[0]
-    ); 
+    final int numVenta = (lastRow.isEmpty) ? 1
+      : ((int.tryParse(lastRow[0])==null) ? 1 : int.parse(lastRow[0]) + 1);
+    
+   
     final String dateTime = DateTime.now().toString();
 
+    // N° VENTA	CODIGO	PRODUCTO	MARCA	PRECIO	CANTIDAD	TOTAL	FECHA
     final List<List<dynamic>> sale = [
       ...products.entries.map((entry) {
         return [
-          numVenta,
-          ...entry.key.toList(),
-          entry.value,
-          entry.key.price * entry.value,
-          dateTime
+          numVenta,                     // N° venta
+          ...entry.key.toList(),        // code, name, brand, price
+          entry.value,                  // quantity
+          entry.key.price * entry.value,// total
+          dateTime                      // date
         ];
       }
     )];

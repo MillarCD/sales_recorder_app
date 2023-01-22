@@ -16,13 +16,13 @@ class ProductsScreen extends StatelessWidget {
     final ProductProvider productProvider = Provider.of<ProductProvider>(context);
 
     return Scaffold(
-      body: (productProvider.products == null) 
+      body: (productProvider.products.isEmpty) 
         ? const Center(child: CircularProgressIndicator())
         : ListView.builder(
           physics: const BouncingScrollPhysics(),
-          itemCount: productProvider.products!.length,
+          itemCount: productProvider.products.length,
           itemBuilder: (context, index) {
-            final Product product = productProvider.products![index];
+            final Product product = productProvider.products[index];
             return ProductCard(product: product);
           },
         ),

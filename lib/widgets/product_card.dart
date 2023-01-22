@@ -6,14 +6,17 @@ class ProductCard extends StatelessWidget {
   const ProductCard({
     Key? key,
     required this.product,
+    this.color
   }) : super(key: key);
 
   final Product product;
+  final Color? color;
   
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: color,
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
