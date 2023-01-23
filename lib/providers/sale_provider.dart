@@ -45,6 +45,10 @@ class SaleProvider extends ChangeNotifier {
     return true;
   }
 
+  List<Product> getProducts() {
+    return [..._products.entries.map((e) => e.key)];
+  }
+
   bool isRegister(int code) {
     final List<MapEntry> res = [..._products.entries.where((entry) => entry.key.code == code)];
     if (res.isEmpty) return false;

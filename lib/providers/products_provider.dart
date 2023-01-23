@@ -30,4 +30,14 @@ class ProductProvider extends ChangeNotifier {
     return product[0];
   }
 
+  List<Product> filterByPatterns(String pattern) {
+    final String p = pattern.split(' ').reduce((acc, v) => '$acc|$v');
+    RegExp regExp = RegExp(p, caseSensitive: false);
+
+    return [..._products.where((product) {
+      final String name = product.name;
+      return [...regExp.allMatches(name)].isNotEmpty;
+    })];
+  }
+
 }

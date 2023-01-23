@@ -34,7 +34,7 @@ class BarcodeReaderScreen extends StatelessWidget {
             print('[BARCODE READER] type: ${barcode.type}');
             print('[BARCODE READER]: Barcode found! $code');
 
-            Product? product = Provider.of<ProductProvider>(context, listen: false).findProductByCode(int.parse(code));
+            Product? product = Provider.of<ProductProvider>(context, listen: false).findProductByCode(int.tryParse(code) ?? -1);
             
             if (product == null) return;
 
