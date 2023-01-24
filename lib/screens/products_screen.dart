@@ -16,8 +16,13 @@ class ProductsScreen extends StatelessWidget {
     final ProductProvider productProvider = Provider.of<ProductProvider>(context);
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
+        elevation: 0,
+        title: const Text('Productos'),
+      ),
       body: (productProvider.products.isEmpty) 
-        ? const Center(child: CircularProgressIndicator())
+        ? Center(child: CircularProgressIndicator(color: Theme.of(context).colorScheme.secondary))
         : ListView.builder(
           physics: const BouncingScrollPhysics(),
           itemCount: productProvider.products.length,
@@ -28,10 +33,10 @@ class ProductsScreen extends StatelessWidget {
         ),
 
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.shopping_cart_outlined),
         onPressed: () {
           Navigator.pushNamed(context, 'sale');
         },
+        child: const Icon(Icons.shopping_cart_outlined),
       ),
     );
   }

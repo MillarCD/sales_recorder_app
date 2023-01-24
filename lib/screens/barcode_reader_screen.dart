@@ -44,9 +44,10 @@ class BarcodeReaderScreen extends StatelessWidget {
       ),
 
       floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextButton(
-            child: const Text('Cancelar'),
+            child: const Text('Cancelar', style: TextStyle(fontSize: 18)),
             onPressed: () {
               Navigator.pop(context);
             },

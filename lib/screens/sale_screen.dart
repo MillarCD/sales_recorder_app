@@ -18,91 +18,120 @@ class SaleScreen extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
+        elevation: 0,
+      ),
       body: SizedBox(
         height: size.height,
-        child: Stack(
-          children: [
-            SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-
-                    SizedBox(height: size.height*0.04,),
-            
-                    ...saleProvider.products.entries.map((MapEntry<Product, int> entry) {
-                      return Dismissible(
-                        key: UniqueKey(),
-                        background: const DismissibleBackGround(alignment: Alignment.centerLeft),
-                        secondaryBackground: const DismissibleBackGround(alignment: Alignment.centerRight),
-                        confirmDismiss: (direction) async {
-                          final bool res = saleProvider.deleteProduct(entry.key);
-                          return res;
-                        },
-                        child: SelectedProductCard(product: entry.key, quantity: entry.value)
-                      );
-                    }),
-            
-                    SizedBox(
-                      width: double.infinity,
-                      height: size.height * .1,
-                      child: ElevatedButton(
+        child: SafeArea(
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    children: [              
+                      ...saleProvider.products.entries.map((MapEntry<Product, int> entry) {
+                        return Dismissible(
+                          key: UniqueKey(),
+                          background: const DismissibleBackGround(alignment: Alignment.centerLeft),
+                          secondaryBackground: const DismissibleBackGround(alignment: Alignment.centerRight),
+                          confirmDismiss: (direction) async {
+                            final bool res = saleProvider.deleteProduct(entry.key);
+                            return res;
+                          },
+                          child: SelectedProductCard(product: entry.key, quantity: entry.value)
+                        );
+                      }),
+                
+                      _AddProductButton(
+                        size: size,
+                        title: 'Agregar Producto',
                         onPressed: () => Navigator.pushNamed(context, 'select_product'),
-                        child: const Text('Agregar Producto', style: TextStyle(fontSize: 17)),
                       ),
-                    ),
-                    SizedBox(height: 10,),
-                    
-                    SizedBox(
-                      width: double.infinity,
-                      height: size.height * .1,
-                      child: ElevatedButton(
+
+                      const SizedBox(height: 5,),
+
+                      _AddProductButton(
+                        size: size,
+                        title: 'Escanear Producto',
                         onPressed: () async {
-                          final Product? product = await Navigator.pushNamed(context, 'barcode_reader') as Product?;
-
-                          if (product != null) saleProvider.addNewProduct(product);
-                        },
-                        child: const Text('Escanear Producto', style: TextStyle(fontSize: 17)),
+                            final Product? product = await Navigator.pushNamed(context, 'barcode_reader') as Product?;
+        
+                            if (product != null) saleProvider.addNewProduct(product);
+                          },
                       ),
-                    ),
-
-                    SizedBox(
-                      height: size.height * 0.12,
-                    )
-                  ],
+                      
+                     
+                      SizedBox(
+                        height: size.height * 0.12,
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-
-            Positioned(
-              left: -1,
-              right: -1,
-              bottom: 10,
-              child: Container(
-                height: size.height * .1,
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    print('[SALE SCREEN] registrar venta');
-                    final int? total = saleProvider.getTotal();
-                    if (total == null) return;
-
-                    final bool? res = await showDialog(
-                      context: context,
-                      builder: (context) => RegisterDialog(total: total),
-                    );
-
-                    if (res == null || !res)  return;
-                    await saleProvider.registerSale();
-                  },
-                  child: const Text('Registrar Venta', style: TextStyle(fontSize: 21))
+        
+              Positioned(
+                left: -1,
+                right: -1,
+                bottom: 10,
+                child: Container(
+                  height: size.height * .1,
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  child: MaterialButton(
+                    color: Theme.of(context).colorScheme.secondary,
+                    onPressed: (saleProvider.products.isEmpty) ? null : () async {
+                      print('[SALE SCREEN] registrar venta');
+            
+                      final int? total = saleProvider.getTotal();
+                      if (total == null) return;
+                  
+                      final bool? res = await showDialog(
+                        context: context,
+                        builder: (context) => RegisterDialog(total: total),
+                      );
+        
+                      if (res == null || !res)  return;
+                      await saleProvider.registerSale();
+                    },
+                    child: const Text('Registrar Venta', style: TextStyle(fontSize: 21))
+                  ),
                 ),
-              ),
-            )
-          ]
+              )
+            ]
+          ),
         ),
+      ),
+    );
+  }
+
+}
+
+class _AddProductButton extends StatelessWidget {
+  const _AddProductButton({
+    Key? key,
+    required this.size,
+    required this.title,
+    this.onPressed,
+  }) : super(key: key);
+
+  final Size size;
+  final String title;
+  final void Function()? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: size.height * .1,
+      child: MaterialButton(
+        color: Theme.of(context).colorScheme.primary,
+        textColor: Theme.of(context).colorScheme.secondaryContainer,
+        onPressed: onPressed,
+        child: Text(title, style: const TextStyle(fontSize: 17)),
       ),
     );
   }

@@ -16,11 +16,11 @@ class RegisterDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context, false),
-          child: const Text('cancelar'),
+          child: Text('cancelar', style: TextStyle(color: Theme.of(context).colorScheme.secondary),),
         ),
         TextButton(
           onPressed: () => Navigator.pop(context, true),
-          child: const Text('Registrar')
+          child: Text('Registrar', style: TextStyle(color: Theme.of(context).colorScheme.secondary))
         )
       ],
     );

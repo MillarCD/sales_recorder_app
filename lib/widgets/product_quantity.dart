@@ -21,7 +21,7 @@ class ProductQuantity extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(),
+        border: Border.all(color: Theme.of(context).colorScheme.secondary, width: 2),
         borderRadius: BorderRadius.circular(10)
       ),
  //     color: Colors.blue,
@@ -30,6 +30,7 @@ class ProductQuantity extends StatelessWidget {
           Expanded(
             flex: 1,
             child: IconButton(
+              color: Theme.of(context).colorScheme.secondary,
               onPressed: () {
                 print('PRODUCT QUANTITY: se saco un producto');
                 HapticFeedback.mediumImpact();
@@ -45,6 +46,7 @@ class ProductQuantity extends StatelessWidget {
           Expanded(
             flex: 1,
             child: IconButton(
+              color: Theme.of(context).colorScheme.secondary,
               onPressed: () {
                 print('PRODUCT QUANTITY: se añadio un producto');
                 HapticFeedback.mediumImpact();

@@ -22,10 +22,14 @@ class SelectedProductCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(product.name, style: const TextStyle(fontSize: 23, fontWeight: FontWeight.bold)),
-                  if (product.brand != null) Text(product.brand!, style: const TextStyle(fontSize: 19)),
-                  Text('\$${product.price.toString()}', style: const TextStyle(fontSize: 19)),
-                  Text('Total: \$${quantity * product.price}', style: const TextStyle(fontSize: 19)),
+                  Text(product.name, style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.secondaryContainer,
+                  )),
+                  if (product.brand != null) Text(product.brand!, style: const TextStyle(fontSize: 17)),
+                  Text('\$${product.price.toString()}', style: const TextStyle(fontSize: 17)),
+                  Text('Total: \$${quantity * product.price}', style: const TextStyle(fontSize: 17)),
                 ],
               ),
             ),

@@ -4,11 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:register_sale_app/providers/products_provider.dart';
 import 'package:register_sale_app/providers/sale_provider.dart';
 import 'package:register_sale_app/screens/screens.dart';
+import 'package:register_sale_app/themes/themes.dart';
 
 void main() {
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider<ProductProvider>(create: (context) => ProductProvider()),
+      ChangeNotifierProvider<ProductProvider>(create: (context) => ProductProvider(), lazy: false,),
       ChangeNotifierProvider<SaleProvider>(create:(context) => SaleProvider()),
     ],
     child: const MyApp()
@@ -24,13 +25,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Sales Recorder',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      initialRoute: 'products',
+      theme: LightTheme.theme,
+      initialRoute: 'home',
       routes: {
-        'products': (context) => const ProductsScreen(),
+        'home': (context) => const HomeScreen(),
         'sale': (context) => const SaleScreen(),
+        'products': (context) => const ProductsScreen(),
         'select_product': (context) => const SelectProductScreen(),
         'barcode_reader': (context) => const BarcodeReaderScreen(),
       },

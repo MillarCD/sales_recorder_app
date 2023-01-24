@@ -23,14 +23,17 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
   void productsFilter(String value) {
     List<Product> filteredList = Provider.of<ProductProvider>(context, listen: false).filterByPatterns(value);
 
-    productfilteredList = [
-      ...filteredList.where((product) {
-        final int code = product.code;
-        return [...registeredProducts.where((p) => p.code == code)].isEmpty;
-      })
-    ];
+    productfilteredList = productFilterByRegister(filteredList);
 
     setState(() {});
+  }
+
+  List<Product> productFilterByRegister(List<Product> productList) {
+    return [
+      ...productList.where((product) {
+        final int code = product.code;
+        return [...registeredProducts.where((p) => p.code == code)].isEmpty;
+    })];
   }
 
   @override
@@ -40,6 +43,8 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
     
     productfilteredList = initProductList;
 
+    productfilteredList = productFilterByRegister(productfilteredList);
+
     super.initState();
   }
 
@@ -47,30 +52,21 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
   Widget build(BuildContext context) {
     
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
+        elevation: 0,
+        title: const Text('Selecciona un producto'),
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
-              child: Text('Selecciona un producto', style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),),
-            ),
-      
+
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  prefix: const Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.black.withOpacity(0.1),
-                ),
-                onChanged: (value) => productsFilter(value),
-              ),
+              padding: const EdgeInsets.all(10.0),
+              child: _SearchBar(onChanged: (value) => productsFilter(value),),
             ),
+
       
             Expanded(
               child: ListView.builder(
@@ -94,6 +90,31 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
           ],
         ),
       )
+    );
+  }
+}
+
+class _SearchBar extends StatelessWidget {
+  const _SearchBar({super.key, this.onChanged});
+
+  final void Function(String)? onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final Color secondaryColor = Theme.of(context).colorScheme.secondary;
+    
+    return TextFormField(
+      decoration: InputDecoration(
+        hintText: 'Buscar Producto',
+        hintStyle: TextStyle(color:secondaryColor),
+        prefixIcon: Icon(Icons.search, color: secondaryColor),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        filled: true,
+      ),
+      onChanged: onChanged,
     );
   }
 }
