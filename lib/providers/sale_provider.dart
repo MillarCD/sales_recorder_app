@@ -7,6 +7,9 @@ class SaleProvider extends ChangeNotifier {
   final Map<Product, int> _products = {};
   Map<Product, int> get products => _products;
 
+  bool _isRegistering = false;
+  bool get isRegistering => _isRegistering;
+
   int? getTotal() {
     if (_products.isEmpty) return null;
 
@@ -57,7 +60,16 @@ class SaleProvider extends ChangeNotifier {
 
   Future<bool> registerSale() async {
     const String sheetName = 'ingresos';
-    final List<String> lastRow = await SpreadsheetService.ssService.getLastRow(sheetName, length: 1);
+    _isRegistering = true;
+    notifyListeners();
+    final List<String>? lastRow = await SpreadsheetService.ssService.getLastRow(sheetName, length: 1);
+
+    if (lastRow == null) {
+      _isRegistering = false;
+      notifyListeners();
+      return false;
+    }
+
     final int numVenta = (lastRow.isEmpty) ? 1
       : ((int.tryParse(lastRow[0])==null) ? 1 : int.parse(lastRow[0]) + 1);
     
@@ -79,9 +91,14 @@ class SaleProvider extends ChangeNotifier {
 
     final bool res = await SpreadsheetService.ssService.appendRows(sheetName, sale);
 
-    if (!res) return false;
+    if (!res) {
+      _isRegistering = false;
+      notifyListeners();
+      return false;
+    }
 
     _products.clear();
+    _isRegistering = false;
     notifyListeners();
     return true;
   }

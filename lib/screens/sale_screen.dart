@@ -17,6 +17,17 @@ class SaleScreen extends StatelessWidget {
     final SaleProvider saleProvider = Provider.of<SaleProvider>(context);
     final Size size = MediaQuery.of(context).size;
 
+    if (saleProvider.isRegistering) {
+      return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        body: Center(
+          child: CircularProgressIndicator(
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        )
+      );
+    }
+    
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -85,7 +96,8 @@ class SaleScreen extends StatelessWidget {
                     color: Theme.of(context).colorScheme.secondary,
                     onPressed: (saleProvider.products.isEmpty) ? null : () async {
                       print('[SALE SCREEN] registrar venta');
-            
+                      final scaffoldMessenger = ScaffoldMessenger.of(context).showSnackBar;
+
                       final int? total = saleProvider.getTotal();
                       if (total == null) return;
                   
@@ -95,8 +107,12 @@ class SaleScreen extends StatelessWidget {
                       );
         
                       if (res == null || !res)  return;
-                      await saleProvider.registerSale();
+                      final bool wasRegister = await saleProvider.registerSale();
+
+                      if (!wasRegister) return;
+                      scaffoldMessenger(const SnackBar(content: Text('Venta registrada'),));
                     },
+
                     child: const Text('Registrar Venta', style: TextStyle(fontSize: 21))
                   ),
                 ),

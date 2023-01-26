@@ -4,8 +4,12 @@ import 'package:register_sale_app/models/product.dart';
 import 'package:register_sale_app/services/spreadsheet_service.dart';
 
 class ProductProvider extends ChangeNotifier {
+
   List<Product> _products = [];
   List<Product> get products => _products;
+
+  bool _isLoadingProducts = false;
+  bool get isLoadingProduct => _isLoadingProducts;
 
   ProductProvider() {
     loadProducts();
@@ -13,13 +17,22 @@ class ProductProvider extends ChangeNotifier {
   
 
   Future<void> loadProducts() async {
+    _isLoadingProducts = true;
+    notifyListeners();
+
     List<List<String>>? productsList = await SpreadsheetService.ssService.getRows('productos');
-    if (productsList == null) return;
+    if (productsList == null) {
+      _isLoadingProducts = false;
+      notifyListeners();
+      return;
+    };
 
     productsList = productsList.sublist(1,productsList.length);
     _products = [...productsList.map((list) => Product.fromList(list))];
    
+    _isLoadingProducts = false;
     notifyListeners();
+    return;
   }
 
   Product? findProductByCode(int code) {

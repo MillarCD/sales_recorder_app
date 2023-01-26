@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:register_sale_app/providers/products_provider.dart';
+import 'package:register_sale_app/services/spreadsheet_service.dart';
+import 'package:register_sale_app/widgets/no_connection_dialog.dart';
 
 class HomeScreen extends StatelessWidget {
 
@@ -6,9 +10,14 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final ProductProvider productProvider = Provider.of<ProductProvider>(context);
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: SizedBox(
+      body: productProvider.isLoadingProduct
+        ? Center(child: CircularProgressIndicator(color: Theme.of(context).colorScheme.secondary))
+        : SizedBox(
         height: double.infinity,
         width: double.infinity,
         child: Column(
@@ -17,7 +26,7 @@ class HomeScreen extends StatelessWidget {
           children: [
             _MenuButton(
               title: 'Registrar Venta',
-              onPressed: () => Navigator.pushNamed(context, 'sale'),
+              onPressed: () async => navigateIfConnected(context, 'sale'),
             ),
 
             const SizedBox(height: 50,),
@@ -31,12 +40,28 @@ class HomeScreen extends StatelessWidget {
 
             _MenuButton(
               title: 'Ver Productos',
-              onPressed: () => Navigator.pushNamed(context, 'products'),
+              onPressed: () async => await navigateIfConnected(context, 'products'),
             )
           ],
         ),
       )
     );
+  }
+
+  Future<void> navigateIfConnected(BuildContext context, String route) async {
+    final ProductProvider productProvider = Provider.of<ProductProvider>(context, listen: false);
+
+    if (SpreadsheetService.ssService.isConnected) {
+      Navigator.pushNamed(context, route);
+      return;
+    }
+
+    await showDialog(
+      context: context, 
+      builder: (context) => const NoConnectionDialog()
+    );
+
+    await productProvider.loadProducts();
   }
 }
 
