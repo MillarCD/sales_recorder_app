@@ -14,7 +14,6 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         child: Row(
@@ -37,12 +36,16 @@ class ProductCard extends StatelessWidget {
       
             Expanded(
               flex: 1,
-              child: Container(
-                child: Center(child: Text('\$${product.price}', style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.secondaryContainer,
-                ))),
+              child: Column(
+                children: [
+                  Text('\$${product.price}', style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.secondaryContainer,
+                  )),
+
+                  Text('Cantidad: ${product.quantity}'),
+                ],
               ),
             )
           ],

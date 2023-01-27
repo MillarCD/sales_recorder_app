@@ -23,21 +23,18 @@ class ProductsScreen extends StatelessWidget {
       ),
       body: (productProvider.products.isEmpty) 
         ? Center(child: CircularProgressIndicator(color: Theme.of(context).colorScheme.secondary))
-        : ListView.builder(
-          physics: const BouncingScrollPhysics(),
-          itemCount: productProvider.products.length,
-          itemBuilder: (context, index) {
-            final Product product = productProvider.products[index];
-            return ProductCard(product: product);
-          },
+        : Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            itemCount: productProvider.products.length,
+            itemBuilder: (context, index) {
+              final Product product = productProvider.products[index];
+              return ProductCard(product: product);
+            },
+          ),
         ),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, 'sale');
-        },
-        child: const Icon(Icons.shopping_cart_outlined),
-      ),
     );
   }
 }

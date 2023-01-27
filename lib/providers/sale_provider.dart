@@ -97,6 +97,10 @@ class SaleProvider extends ChangeNotifier {
       return false;
     }
 
+    for (var entry in _products.entries) {
+      entry.key.quantity -= entry.value;
+    }
+
     _products.clear();
     _isRegistering = false;
     notifyListeners();

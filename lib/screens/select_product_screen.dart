@@ -58,36 +58,36 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
         title: const Text('Selecciona un producto'),
       ),
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
 
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: _SearchBar(onChanged: (value) => productsFilter(value),),
-            ),
+              _SearchBar(onChanged: (value) => productsFilter(value),),
 
       
-            Expanded(
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: productfilteredList.length,
-                itemBuilder: (context, index) {
-                  final Product product = productfilteredList[index];
-            
-                  return GestureDetector(
-                    onTap: () {
-                      print('[GESTURE DETECTOR] product: ${product.name}');
-                      Provider.of<SaleProvider>(context, listen: false).addNewProduct(product);
-                      Navigator.pop(context);
-                    },
-                    child: ProductCard(product: product),
-                  );
-                },
+              Expanded(
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: productfilteredList.length,
+                  itemBuilder: (context, index) {
+                    final Product product = productfilteredList[index];
+              
+                    return GestureDetector(
+                      onTap: () {
+                        print('[GESTURE DETECTOR] product: ${product.name}');
+                        Provider.of<SaleProvider>(context, listen: false).addNewProduct(product);
+                        Navigator.pop(context);
+                      },
+                      child: ProductCard(product: product),
+                    );
+                  },
+                ),
               ),
-            ),
-        
-          ],
+          
+            ],
+          ),
         ),
       )
     );
