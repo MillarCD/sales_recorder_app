@@ -19,7 +19,7 @@ class BarcodeReaderScreen extends StatelessWidget {
         BarcodeFormat.itf,
       ]
       */
-      facing: CameraFacing.front,
+      facing: CameraFacing.back,
     );
 
     return Scaffold(
