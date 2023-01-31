@@ -95,7 +95,6 @@ class SaleScreen extends StatelessWidget {
                   child: MaterialButton(
                     color: Theme.of(context).colorScheme.secondary,
                     onPressed: (saleProvider.products.isEmpty) ? null : () async {
-                      print('[SALE SCREEN] registrar venta');
                       final scaffoldMessenger = ScaffoldMessenger.of(context).showSnackBar;
 
                       final int? total = saleProvider.getTotal();

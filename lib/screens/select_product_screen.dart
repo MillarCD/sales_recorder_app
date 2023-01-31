@@ -76,7 +76,6 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
               
                     return GestureDetector(
                       onTap: () {
-                        print('[GESTURE DETECTOR] product: ${product.name}');
                         Provider.of<SaleProvider>(context, listen: false).addNewProduct(product);
                         Navigator.pop(context);
                       },
@@ -95,7 +94,7 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
 }
 
 class _SearchBar extends StatelessWidget {
-  const _SearchBar({super.key, this.onChanged});
+  const _SearchBar({this.onChanged});
 
   final void Function(String)? onChanged;
 

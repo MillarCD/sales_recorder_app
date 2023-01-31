@@ -32,7 +32,6 @@ class ProductQuantity extends StatelessWidget {
             child: IconButton(
               color: Theme.of(context).colorScheme.secondary,
               onPressed: () {
-                print('PRODUCT QUANTITY: se saco un producto');
                 HapticFeedback.mediumImpact();
                 saleProvider.removeOneProduct(product);
               },
@@ -48,7 +47,6 @@ class ProductQuantity extends StatelessWidget {
             child: IconButton(
               color: Theme.of(context).colorScheme.secondary,
               onPressed: () {
-                print('PRODUCT QUANTITY: se añadio un producto');
                 HapticFeedback.mediumImpact();
                 saleProvider.addOneProduct(product);
               },

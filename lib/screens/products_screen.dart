@@ -88,7 +88,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
 }
 
 class _SearchBar extends StatelessWidget {
-  const _SearchBar({super.key, this.onChanged});
+  const _SearchBar({this.onChanged});
 
   final void Function(String)? onChanged;
 
