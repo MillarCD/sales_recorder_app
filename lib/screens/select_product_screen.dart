@@ -32,7 +32,7 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
     return [
       ...productList.where((product) {
         final int code = product.code;
-        return [...registeredProducts.where((p) => p.code == code)].isEmpty;
+        return product.quantity!=0 && [...registeredProducts.where((p) => p.code == code)].isEmpty;
     })];
   }
 

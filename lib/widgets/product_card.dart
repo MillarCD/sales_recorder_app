@@ -44,7 +44,10 @@ class ProductCard extends StatelessWidget {
                     color: Theme.of(context).colorScheme.secondaryContainer,
                   )),
 
-                  Text('Cantidad: ${product.quantity}'),
+                  Text(
+                    'Cantidad: ${product.quantity}',
+                    style: (product.quantity==0) ? const TextStyle(color: Colors.red) : null
+                  ),
                 ],
               ),
             )

@@ -48,8 +48,8 @@ class ProductProvider extends ChangeNotifier {
     RegExp regExp = RegExp(p, caseSensitive: false);
 
     return [..._products.where((product) {
-      final String name = product.name;
-      return [...regExp.allMatches(name)].isNotEmpty;
+      final String s = "${product.name} ${product.brand ?? ''}";
+      return [...regExp.allMatches(s)].isNotEmpty;
     })];
   }
 
