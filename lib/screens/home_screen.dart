@@ -31,8 +31,9 @@ class HomeScreen extends StatelessWidget {
 
             const SizedBox(height: 50,),
 
-            const _MenuButton(
-              title: 'Registrar Pedido'
+            _MenuButton(
+              title: 'Registrar Pedido',
+              onPressed: () async => await navigateIfConnected(context, 'order'),
             ),
 
             const SizedBox(height: 50,),

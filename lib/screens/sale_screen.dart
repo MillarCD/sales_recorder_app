@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:register_sale_app/models/product.dart';
 import 'package:register_sale_app/providers/sale_provider.dart';
+import 'package:register_sale_app/widgets/add_product_button.dart';
 import 'package:register_sale_app/widgets/dismissible_background.dart';
 import 'package:register_sale_app/widgets/register_dialog.dart';
 import 'package:register_sale_app/widgets/selected_product_card.dart';
@@ -58,15 +59,18 @@ class SaleScreen extends StatelessWidget {
                         );
                       }),
                 
-                      _AddProductButton(
+                      AddProductButton(
                         size: size,
                         title: 'Agregar Producto',
-                        onPressed: () => Navigator.pushNamed(context, 'select_product'),
+                        onPressed: () {
+                          final Product? product = Navigator.pushNamed(context, 'select_product') as Product?;
+                          if (product!=null) saleProvider.addNewProduct(product);
+                        },
                       ),
 
                       const SizedBox(height: 5,),
 
-                      _AddProductButton(
+                      AddProductButton(
                         size: size,
                         title: 'Escanear Producto',
                         onPressed: () async {
@@ -103,7 +107,7 @@ class SaleScreen extends StatelessWidget {
                   
                       final bool? res = await showDialog(
                         context: context,
-                        builder: (context) => RegisterDialog(total: total),
+                        builder: (context) => RegisterDialog(title: '¿Registrar venta?', content: 'Total: $total'),
                       );
         
                       if (res == null || !res)  return;
@@ -126,29 +130,3 @@ class SaleScreen extends StatelessWidget {
 
 }
 
-class _AddProductButton extends StatelessWidget {
-  const _AddProductButton({
-    Key? key,
-    required this.size,
-    required this.title,
-    this.onPressed,
-  }) : super(key: key);
-
-  final Size size;
-  final String title;
-  final void Function()? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: size.height * .1,
-      child: MaterialButton(
-        color: Theme.of(context).colorScheme.primary,
-        textColor: Theme.of(context).colorScheme.secondaryContainer,
-        onPressed: onPressed,
-        child: Text(title, style: const TextStyle(fontSize: 17)),
-      ),
-    );
-  }
-}

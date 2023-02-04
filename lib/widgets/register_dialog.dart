@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class RegisterDialog extends StatelessWidget {
 
-  final int total;
+  final String title;
+  final String content;
 
-  const RegisterDialog({super.key, required this.total});
+  const RegisterDialog({super.key, required this.title, required this.content});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('¿Registrar venta?'),
-      content: Text('Total: \$$total'),
+      title: Text(title),
+      content: Text(content),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context, false),

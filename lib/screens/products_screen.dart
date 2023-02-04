@@ -55,7 +55,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         elevation: 0,
-        title: const Text('Selecciona un producto'),
+        title: const Text('Productos'),
       ),
       body: SafeArea(
         child: Padding(

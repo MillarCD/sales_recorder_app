@@ -66,7 +66,6 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
 
               _SearchBar(onChanged: (value) => productsFilter(value),),
 
-      
               Expanded(
                 child: ListView.builder(
                   physics: const BouncingScrollPhysics(),
@@ -77,8 +76,7 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
                     return GestureDetector(
                       onTap: () {
                         print('[GESTURE DETECTOR] product: ${product.name}');
-                        Provider.of<SaleProvider>(context, listen: false).addNewProduct(product);
-                        Navigator.pop(context);
+                        Navigator.pop(context, product);
                       },
                       child: ProductCard(product: product),
                     );

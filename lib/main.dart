@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:register_sale_app/providers/order_provider.dart';
 
 import 'package:register_sale_app/providers/products_provider.dart';
 import 'package:register_sale_app/providers/sale_provider.dart';
@@ -11,6 +12,7 @@ void main() {
     providers: [
       ChangeNotifierProvider<ProductProvider>(create: (context) => ProductProvider(), lazy: false,),
       ChangeNotifierProvider<SaleProvider>(create:(context) => SaleProvider()),
+      ChangeNotifierProvider<OrderProvider>(create: (context) => OrderProvider())
     ],
     child: const MyApp()
   ));
@@ -33,6 +35,7 @@ class MyApp extends StatelessWidget {
         'products': (context) => const ProductsScreen(),
         'select_product': (context) => const SelectProductScreen(),
         'barcode_reader': (context) => const BarcodeReaderScreen(),
+        'order': (context) => const OrderScreen(),
       },
     );
   }
