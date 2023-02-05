@@ -27,19 +27,16 @@ class BarcodeReaderScreen extends StatelessWidget {
         allowDuplicates: false,
         controller: controller,
         onDetect: (barcode, args) {
-          if (barcode.rawValue == null) {
-            print('[BARCODE READER]: Failed to scan Barcode');
-          } else {
-            final String code = barcode.rawValue!;
-            print('[BARCODE READER] type: ${barcode.type}');
-            print('[BARCODE READER]: Barcode found! $code');
+          if (barcode.rawValue == null) return;
 
-            Product? product = Provider.of<ProductProvider>(context, listen: false).findProductByCode(int.tryParse(code) ?? -1);
+          final String code = barcode.rawValue!;
+
+          Product? product = Provider.of<ProductProvider>(context, listen: false).findProductByCode(int.tryParse(code) ?? -1);
             
-            if (product == null) return;
+          if (product == null) return;
 
-            Navigator.pop(context, product);
-          }
+          Navigator.pop(context, product);
+          
         },
       ),
 

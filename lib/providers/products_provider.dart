@@ -25,7 +25,7 @@ class ProductProvider extends ChangeNotifier {
       _isLoadingProducts = false;
       notifyListeners();
       return;
-    };
+    }
 
     productsList = productsList.sublist(1,productsList.length);
     _products = [...productsList.map((list) => Product.fromList(list))];

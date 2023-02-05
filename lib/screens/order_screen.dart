@@ -6,8 +6,8 @@ import 'package:register_sale_app/providers/order_provider.dart';
 import 'package:register_sale_app/widgets/add_product_button.dart';
 import 'package:register_sale_app/widgets/dismissible_background.dart';
 import 'package:register_sale_app/widgets/form_dialog.dart';
+import 'package:register_sale_app/widgets/ordered_product_card.dart';
 import 'package:register_sale_app/widgets/register_dialog.dart';
-import 'package:register_sale_app/widgets/selected_product_card.dart';
 
 class OrderScreen extends StatelessWidget {
 
@@ -55,7 +55,11 @@ class OrderScreen extends StatelessWidget {
                           final bool res = orderProvider.deleteProduct(entry.key);
                           return res;
                         },
-                        child: SelectedProductCard(product: entry.key, quantity: entry.value[0].round())
+                        child: OrderedProductCard(
+                          product: entry.key, 
+                          quantity: entry.value[0].round(),
+                          price: entry.value[1],
+                        )
                       );
                     }),
                     
@@ -72,14 +76,31 @@ class OrderScreen extends StatelessWidget {
               onPressed: () async {
                 final Product? product = await Navigator.pushNamed(context, 'select_product') as Product?;
                 if (product==null) return;
-                
 
-                await showDialog(context: context, builder: (context) {
-                  return const FormDialog(title: 'Ingrese Precio', hintText: '\$100');
+                double? price;
+              
+                bool? res = await showDialog(context: context, builder: (context) {
+                  return FormDialog(
+                    title: 'Ingresar Precio',
+                    hintText: '\$100',
+                    keyboardType: const TextInputType.numberWithOptions(),
+                    onChanged: (value) {
+                      print('value: $value');
+                      if ((price = double.tryParse(value ?? '')) == null) {
+                        return 'Debe ingresar un numero valido';
+                      } else if (price !<= 0) {
+                        return 'El precio debe ser mayor a 0';
+                      }
+                      return null;
+                    },
+                  );
                 });
 
-                // TODO: show dialog to enter price
-                orderProvider.addNewProduct(product, 100);
+                if ((res ?? false) && price!=null && price!>0) {
+                  
+                  orderProvider.addNewProduct(product, price!);
+                }
+
               }
             ),
             
@@ -116,7 +137,7 @@ class OrderScreen extends StatelessWidget {
                 );
         
                 if (res == null || !res)  return;
-                final bool wasRegister = await orderProvider.registerSale();
+                final bool wasRegister = await orderProvider.registerOrder();
 
                 if (!wasRegister) return;
                 scaffoldMessenger(const SnackBar(content: Text('Pedido registrado'),));

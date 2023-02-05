@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-
-import 'package:register_sale_app/providers/sale_provider.dart';
-import 'package:register_sale_app/models/product.dart';
 
 class ProductQuantity extends StatelessWidget {
 
-  final Product product;
+  final int quantity;
+  final void Function() add;
+  final void Function() rem;
 
   const ProductQuantity({
     Key? key,
-    required this.product
+    required this.quantity,
+    required this.add,
+    required this.rem
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
-    final SaleProvider saleProvider = Provider.of<SaleProvider>(context);
 
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Theme.of(context).colorScheme.secondary, width: 2),
         borderRadius: BorderRadius.circular(10)
       ),
- //     color: Colors.blue,
+
       child: Row(
         children: [
           Expanded(
@@ -34,23 +32,23 @@ class ProductQuantity extends StatelessWidget {
               onPressed: () {
                 print('PRODUCT QUANTITY: se saco un producto');
                 HapticFeedback.mediumImpact();
-                saleProvider.removeOneProduct(product);
+                rem();
               },
               icon: const Icon(Icons.remove),
             ),
           ),
           Expanded(
             flex: 1,
-            child: Center(child: Text("${saleProvider.products[product]}", style: const TextStyle(fontSize: 19))),
+            child: Center(child: Text(quantity.toString(), style: const TextStyle(fontSize: 19))),
           ),
           Expanded(
             flex: 1,
             child: IconButton(
               color: Theme.of(context).colorScheme.secondary,
               onPressed: () {
-                print('PRODUCT QUANTITY: se añadio un producto');
+                print('PRODUCT QUANTITY: se sumo un producto');
                 HapticFeedback.mediumImpact();
-                saleProvider.addOneProduct(product);
+                add();
               },
               icon: const Icon(Icons.add),
             ),

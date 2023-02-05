@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 
 import 'package:register_sale_app/models/product.dart';
 import 'package:register_sale_app/providers/products_provider.dart';
-import 'package:register_sale_app/providers/sale_provider.dart';
 import 'package:register_sale_app/widgets/product_card.dart';
 
 class ProductsScreen extends StatefulWidget {
@@ -17,33 +16,19 @@ class ProductsScreen extends StatefulWidget {
 class _ProductsScreenState extends State<ProductsScreen> {
 
   List<Product> initProductList = [];
-  List<Product> registeredProducts = [];
   List<Product> productfilteredList = [];
 
   void productsFilter(String value) {
-    List<Product> filteredList = Provider.of<ProductProvider>(context, listen: false).filterByPatterns(value);
-
-    productfilteredList = productFilterByRegister(filteredList);
+    productfilteredList = Provider.of<ProductProvider>(context, listen: false).filterByPatterns(value);
 
     setState(() {});
   }
 
-  List<Product> productFilterByRegister(List<Product> productList) {
-    return [
-      ...productList.where((product) {
-        final int code = product.code;
-        return [...registeredProducts.where((p) => p.code == code)].isEmpty;
-    })];
-  }
 
   @override
   void initState() {
     initProductList = Provider.of<ProductProvider>(context, listen: false).products;
-    registeredProducts = Provider.of<SaleProvider>(context, listen: false).getProducts();
-    
     productfilteredList = initProductList;
-
-    productfilteredList = productFilterByRegister(productfilteredList);
 
     super.initState();
   }
@@ -88,7 +73,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
 }
 
 class _SearchBar extends StatelessWidget {
-  const _SearchBar({super.key, this.onChanged});
+  const _SearchBar({this.onChanged});
 
   final void Function(String)? onChanged;
 

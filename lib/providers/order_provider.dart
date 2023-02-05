@@ -60,7 +60,7 @@ class OrderProvider extends ChangeNotifier {
     return true;
   }
 
-  Future<bool> registerSale() async {
+  Future<bool> registerOrder() async {
     const String sheetName = 'egresos';
     _isRegistering = true;
     notifyListeners();

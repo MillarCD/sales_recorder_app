@@ -2,20 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:register_sale_app/models/product.dart';
-import 'package:register_sale_app/providers/sale_provider.dart';
+import 'package:register_sale_app/providers/order_provider.dart';
 import 'package:register_sale_app/widgets/product_quantity.dart';
 
-class SelectedProductCard extends StatelessWidget {
+class OrderedProductCard extends StatelessWidget {
 
   final Product product;
+  final double price;
   final int quantity;
   
-  const SelectedProductCard({super.key, required this.product, required this.quantity,});
+  const OrderedProductCard({super.key, required this.product, required this.quantity, required this.price});
 
   @override
   Widget build(BuildContext context) {
     
-    final SaleProvider saleProvider = Provider.of<SaleProvider>(context);
+    final OrderProvider orderProvider = Provider.of<OrderProvider>(context);
 
     return Card(
       child: Container(
@@ -33,8 +34,8 @@ class SelectedProductCard extends StatelessWidget {
                     color: Theme.of(context).colorScheme.secondaryContainer,
                   )),
                   if (product.brand != null) Text(product.brand!, style: const TextStyle(fontSize: 17)),
-                  Text('\$${product.price.toString()}', style: const TextStyle(fontSize: 17)),
-                  Text('Total: \$${quantity * product.price}', style: const TextStyle(fontSize: 17)),
+                  Text('\$${price.toString()}', style: const TextStyle(fontSize: 17)),
+                  Text('Total: \$${quantity * price}', style: const TextStyle(fontSize: 17)),
                 ],
               ),
             ),
@@ -44,10 +45,10 @@ class SelectedProductCard extends StatelessWidget {
               child: ProductQuantity(
                 quantity: quantity,
                 add: () {
-                  saleProvider.addOneProduct(product);
+                  orderProvider.addOneProduct(product);
                 },
                 rem: () {
-                  saleProvider.removeOneProduct(product);
+                  orderProvider.removeOneProduct(product);
                 }
               ),
             )

@@ -62,8 +62,11 @@ class SaleScreen extends StatelessWidget {
                       AddProductButton(
                         size: size,
                         title: 'Agregar Producto',
-                        onPressed: () {
-                          final Product? product = Navigator.pushNamed(context, 'select_product') as Product?;
+                        onPressed: () async {
+                          final Product? product = await Navigator.pushNamed(
+                            context, 'select_product',
+                            arguments: saleProvider.getProducts()
+                          ) as Product?;
                           if (product!=null) saleProvider.addNewProduct(product);
                         },
                       ),

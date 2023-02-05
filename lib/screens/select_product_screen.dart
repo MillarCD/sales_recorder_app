@@ -41,6 +41,8 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
     initProductList = Provider.of<ProductProvider>(context, listen: false).products;
     registeredProducts = Provider.of<SaleProvider>(context, listen: false).getProducts();
     
+
+    
     productfilteredList = initProductList;
 
     productfilteredList = productFilterByRegister(productfilteredList);
@@ -50,7 +52,7 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -75,7 +77,6 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
               
                     return GestureDetector(
                       onTap: () {
-                        print('[GESTURE DETECTOR] product: ${product.name}');
                         Navigator.pop(context, product);
                       },
                       child: ProductCard(product: product),
@@ -93,7 +94,7 @@ class _SelectProductScreenState extends State<SelectProductScreen> {
 }
 
 class _SearchBar extends StatelessWidget {
-  const _SearchBar({super.key, this.onChanged});
+  const _SearchBar({this.onChanged});
 
   final void Function(String)? onChanged;
 
