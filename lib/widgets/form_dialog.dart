@@ -6,18 +6,19 @@ class FormDialog extends StatelessWidget {
     required this.title,
     required this.hintText, 
     required this.keyboardType,
-    this.onChanged
+    this.validate
   });
 
   final String title;
   final String hintText;
   final TextInputType keyboardType;
-  final String? Function(String?)? onChanged;
+  final String? Function(String?)? validate;
 
   @override
   Widget build(BuildContext context) {
 
-    
+    GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    TextEditingController controller = TextEditingController();
     
     return SimpleDialog(
       title: Text(title),
@@ -26,8 +27,10 @@ class FormDialog extends StatelessWidget {
           margin: const EdgeInsets.all(10),
           child: Form(
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            key: formKey,
 
             child: TextFormField(
+              controller: controller,
               keyboardType: keyboardType,
               decoration: InputDecoration(
                 hintText: hintText,
@@ -38,7 +41,7 @@ class FormDialog extends StatelessWidget {
                 ),
                 filled: true,
               ),
-              validator: onChanged,
+              validator: validate,
             ),
           ),
         ),
@@ -47,12 +50,16 @@ class FormDialog extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             TextButton(
-              onPressed: () => Navigator.pop(context, false),
+              onPressed: () => Navigator.pop(context),
               child: Text('cancelar', style: TextStyle(color: Theme.of(context).colorScheme.secondary),),
             ),
 
             TextButton(
-              onPressed: () => Navigator.pop(context, true),
+              onPressed: () {
+                if (formKey.currentState?.validate() ?? false) {
+                  return Navigator.pop(context, controller.text);
+                }
+              },
               child: Text('Aceptar', style: TextStyle(color: Theme.of(context).colorScheme.secondary))
             ),
 

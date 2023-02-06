@@ -60,8 +60,8 @@ class OrderProvider extends ChangeNotifier {
     return true;
   }
 
-  Future<bool> registerOrder() async {
-    const String sheetName = 'egresos';
+  Future<bool> registerOrder(String supplier) async {
+    const String sheetName = 'egresos_test';
     _isRegistering = true;
     notifyListeners();
     final List<String>? lastRow = await SpreadsheetService.ssService.getLastRow(sheetName, length: 1);
