@@ -7,7 +7,6 @@ import 'package:register_sale_app/widgets/add_product_button.dart';
 import 'package:register_sale_app/widgets/dismissible_background.dart';
 import 'package:register_sale_app/widgets/form_dialog.dart';
 import 'package:register_sale_app/widgets/ordered_product_card.dart';
-import 'package:register_sale_app/widgets/register_dialog.dart';
 
 class OrderScreen extends StatelessWidget {
 
@@ -71,7 +70,6 @@ class OrderScreen extends StatelessWidget {
             const SizedBox(height: 10,),
 
             AddProductButton(
-              size: size,
               title: 'Agregar Producto',
               onPressed: () async {
                 final Product? product = await Navigator.pushNamed(
@@ -94,7 +92,6 @@ class OrderScreen extends StatelessWidget {
             const SizedBox(height: 5,),
             
             AddProductButton(
-              size: size,
               title: 'Escanear Producto',
               onPressed: () async {
                 final Product? product = await Navigator.pushNamed(context, 'barcode_reader') as Product?;

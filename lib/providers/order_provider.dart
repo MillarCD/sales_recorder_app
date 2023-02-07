@@ -7,7 +7,7 @@ class OrderProvider extends ChangeNotifier {
   final Map<Product, List<double>> _products = {};
   Map<Product, List<double>> get products => _products;
 
-  static const double tax = 0.19;
+  static const double withTax = 1.19;
 
   bool _isRegistering = false;
   bool get isRegistering => _isRegistering;
@@ -18,7 +18,7 @@ class OrderProvider extends ChangeNotifier {
     double total = 0;
 
     for (var entry in _products.entries) {
-      total += entry.key.price * entry.value[0];
+      total += entry.value[1] * entry.value[0];
     }
     return total;
   }
@@ -61,7 +61,7 @@ class OrderProvider extends ChangeNotifier {
   }
 
   Future<bool> registerOrder(String supplier) async {
-    const String sheetName = 'egresos_test';
+    const String sheetName = 'egresos_test'; // TODO: cambiar a hoja real <---
     _isRegistering = true;
     notifyListeners();
     final List<String>? lastRow = await SpreadsheetService.ssService.getLastRow(sheetName, length: 1);
@@ -78,7 +78,6 @@ class OrderProvider extends ChangeNotifier {
    
     final String dateTime = DateTime.now().toString();
 
-    // N° VENTA |	CODIGO	| PRODUCTO	| MARCA	| PRECIO	| CANTIDAD	| TOTAL	| FECHA
     // N° COMPRA |	CODIGO	| PRODUCTO	| MARCA	| PROVEEDOR	| PRECIO (SIN IMPUESTO)	|
     // PRECIO (CON IMPUESTO)	| CANTIDAD	| TOTAL	| FECHA
     final List<List<dynamic>> order = [
@@ -86,15 +85,20 @@ class OrderProvider extends ChangeNotifier {
         final int code = entry.key.code;
         final String name = entry.key.name;
         final String? brand = entry.key.brand;
-        final int price = entry.key.price; // necesitamos el precio del proovedoor
-        // TODO: solucion: abrir un dialogo al seleccionar o escanear el producto
+        final double price = entry.value[1];
+        final int quantity = entry.value[0].round();
 
         return [
-          numOrder,                     // N° venta
-          ...entry.key.toList(),        // code, name, brand, price
-          entry.value,                  // quantity
-          entry.key.price * entry.value[0],// total
-          dateTime                      // date
+          numOrder,               // N° orden
+          supplier,
+          code,
+          name,
+          brand,
+          price,
+          price * withTax,
+          quantity,
+          price * withTax * quantity, // total
+          dateTime
         ];
       }
     )];

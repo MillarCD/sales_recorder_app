@@ -60,7 +60,6 @@ class SaleScreen extends StatelessWidget {
                       }),
                 
                       AddProductButton(
-                        size: size,
                         title: 'Agregar Producto',
                         onPressed: () async {
                           final Product? product = await Navigator.pushNamed(
@@ -74,7 +73,6 @@ class SaleScreen extends StatelessWidget {
                       const SizedBox(height: 5,),
 
                       AddProductButton(
-                        size: size,
                         title: 'Escanear Producto',
                         onPressed: () async {
                             final Product? product = await Navigator.pushNamed(context, 'barcode_reader') as Product?;

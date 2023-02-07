@@ -19,7 +19,7 @@ class FormDialog extends StatelessWidget {
 
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
     TextEditingController controller = TextEditingController();
-    
+
     return SimpleDialog(
       title: Text(title),
       children: [
@@ -50,7 +50,9 @@ class FormDialog extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                Navigator.pop(context);
+              },
               child: Text('cancelar', style: TextStyle(color: Theme.of(context).colorScheme.secondary),),
             ),
 

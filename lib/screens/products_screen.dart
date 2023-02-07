@@ -13,6 +13,11 @@ class ProductsScreen extends StatelessWidget {
         elevation: 0,
       ),
       body: const ProductsList(),
+
+      floatingActionButton: FloatingActionButton(
+        child: const Icon( Icons.add ),
+        onPressed: () => Navigator.pushNamed(context, 'create_product'),
+      ),
     );
   }
 }
