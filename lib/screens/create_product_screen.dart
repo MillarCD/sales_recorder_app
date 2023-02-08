@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:register_sale_app/models/product.dart';
+import 'package:register_sale_app/providers/products_provider.dart';
 import 'package:register_sale_app/widgets/add_product_button.dart';
 
 class CreateProductScreen extends StatelessWidget {
@@ -10,6 +13,18 @@ class CreateProductScreen extends StatelessWidget {
 
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final Color secondaryColor = Theme.of(context).colorScheme.secondary;
+    ProductProvider productProvider = Provider.of<ProductProvider>(context);
+
+    final TextEditingController codeController = TextEditingController();
+    final TextEditingController nameController = TextEditingController();
+    final TextEditingController brandController = TextEditingController();
+    final TextEditingController priceController = TextEditingController();
+
+    if (productProvider.isRegistering) {
+      return Scaffold(
+      body: Center(child: CircularProgressIndicator(color: Theme.of(context).colorScheme.secondary)),
+    );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -27,41 +42,56 @@ class CreateProductScreen extends StatelessWidget {
               children: [
 
                 TextFormField(
+                  controller: codeController,
+                  keyboardType: TextInputType.number,
                   cursorColor: Theme.of(context).colorScheme.secondary,
                   decoration: textFormFieldDecoration(secondaryColor, 'Codigo'),
                   validator: (value) {
-                    // TODO: verificar que no este registrado
-                    // TODO: verificar que sea un entero sin signo
+                    final int? code;
+                    if ((code = int.tryParse(value ?? '')) == null) return 'Debe ingresar un número valido.';
+
+                    if (productProvider.checkProductByCode(code!)) {
+                      return 'El codigo ya esta registrado';
+                    }
+                    return null;
                   },
                 ),
         
                 const SizedBox(height: 10,),
 
                 TextFormField(
+                  controller: nameController,
+                  keyboardType: TextInputType.text,
                   cursorColor: Theme.of(context).colorScheme.secondary,
                   decoration: textFormFieldDecoration(secondaryColor, 'Nombre del Producto'),
                   validator: (value) {
-                    // TODO: verificar que no este vacio
+                    if (value == null || value == '') return 'Debe ingresar un nombre';
+                    return null;
                   },
                 ),
         
                 const SizedBox(height: 10,),
         
                 TextFormField(
+                  controller: brandController,
+                  keyboardType: TextInputType.text,
                   cursorColor: Theme.of(context).colorScheme.secondary,
                   decoration: textFormFieldDecoration(secondaryColor, 'Marca'),
-                  validator: (value) {
-                    // TODO: Verificar que no este vacio
-                  },
                 ),
         
                 const SizedBox(height: 10,),
         
                 TextFormField(
+                  controller: priceController,
+                  keyboardType: TextInputType.number,
                   cursorColor: Theme.of(context).colorScheme.secondary,
                   decoration: textFormFieldDecoration(secondaryColor, 'Precio'),
                   validator: (value) {
-                    // TODO: verificar que sea un numero entero positivo
+                    final int? price;
+                    if ((price = int.tryParse(value ?? '')) == null) return 'Debe ingresar un precio valido';
+                    if (price !< 1) return 'Debe ingresar un valor positivo';
+
+                    return null;
                   },
                 ),
 
@@ -70,9 +100,26 @@ class CreateProductScreen extends StatelessWidget {
         
                 AddProductButton(
                   title: 'Crear producto',
-                  onPressed: () {
-                    // TODO: activar las verificaciones
-                    // TODO: crear producto con el producto provider
+                  onPressed: () async {
+                    if (formKey.currentState?.validate() ?? false) {
+                      final bool res = await productProvider.registerProduct(
+                        Product(
+                          name: nameController.text,
+                          code: int.parse(codeController.text),
+                          brand: brandController.text,
+                          price: int.parse(priceController.text),
+                          quantity: 0,
+                        )
+                      );
+
+                      if (res == true) {
+                        codeController.text = '';
+                        nameController.text = '';
+                        brandController.text = '';
+                        priceController.text = '';
+                      }
+                    }
+
                   },
                 )
               ]

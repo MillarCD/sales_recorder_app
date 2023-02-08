@@ -11,6 +11,9 @@ class ProductProvider extends ChangeNotifier {
   bool _isLoadingProducts = false;
   bool get isLoadingProduct => _isLoadingProducts;
 
+  bool _isRegistering = false;
+  bool get isRegistering => _isRegistering;
+
   ProductProvider() {
     loadProducts();
   }
@@ -35,6 +38,13 @@ class ProductProvider extends ChangeNotifier {
     return;
   }
 
+  bool checkProductByCode(int code) {
+    for (Product product in _products) {
+      if (product.code == code) return true;
+    }
+    return false;
+  }
+
   Product? findProductByCode(int code) {
     List<Product> product = [..._products.where((p) => p.code == code)];
 
@@ -53,6 +63,29 @@ class ProductProvider extends ChangeNotifier {
     })];
   }
 
-  
+  Future<bool> registerProduct(Product newProduct) async {
+    const String sheetName = 'productos_respaldo';
+    _isRegistering = true;
+    notifyListeners();
+
+    // CODE NAME BRAND PRICE QUANTITY
+    final bool res = await SpreadsheetService.ssService.appendRows(
+      sheetName,
+      [[
+        ...newProduct.toList(),
+      ]]
+    );
+
+    if (!res) {
+      _isRegistering = false;
+      notifyListeners();
+      return false;
+    }
+
+    _products.add(newProduct);
+    _isRegistering = false;
+    notifyListeners();
+    return true;
+  }
 
 }
