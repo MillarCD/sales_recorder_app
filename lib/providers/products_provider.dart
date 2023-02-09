@@ -65,14 +65,32 @@ class ProductProvider extends ChangeNotifier {
 
   Future<bool> registerProduct(Product newProduct) async {
     const String sheetName = 'productos_respaldo';
+    const String formule = '''=SUMA(
+        SUMA(
+          SI.ERROR(
+            filter(egresos!H2:H,egresos!C2:C=INDIRECT("A"&ROW())),
+            0
+          )
+        )
+        -
+        SUMA(
+          SI.ERROR(
+            filter(ingresos!F2:F,ingresos!B2:B=INDIRECT("A"&ROW())),
+            0
+          )
+        )
+      )
+    ''';
+
     _isRegistering = true;
     notifyListeners();
 
     // CODE NAME BRAND PRICE QUANTITY
-    final bool res = await SpreadsheetService.ssService.appendRows(
+    bool res = await SpreadsheetService.ssService.appendRows(
       sheetName,
       [[
         ...newProduct.toList(),
+        formule
       ]]
     );
 

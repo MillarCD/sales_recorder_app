@@ -102,6 +102,8 @@ class CreateProductScreen extends StatelessWidget {
                   title: 'Crear producto',
                   onPressed: () async {
                     if (formKey.currentState?.validate() ?? false) {
+                      final showSnackBar = ScaffoldMessenger.of(context).showSnackBar;
+                      
                       final bool res = await productProvider.registerProduct(
                         Product(
                           name: nameController.text,
@@ -117,7 +119,14 @@ class CreateProductScreen extends StatelessWidget {
                         nameController.text = '';
                         brandController.text = '';
                         priceController.text = '';
+                        return;
                       }
+
+                      showSnackBar(
+                        const SnackBar(
+                          content: Text('Error... No se pudo agregar el producto'),                          
+                        )
+                      );
                     }
 
                   },
