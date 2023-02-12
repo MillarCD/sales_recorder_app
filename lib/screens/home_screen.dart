@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'package:register_sale_app/providers/login_provider.dart';
 import 'package:register_sale_app/providers/products_provider.dart';
 import 'package:register_sale_app/services/spreadsheet_service.dart';
 import 'package:register_sale_app/widgets/no_connection_dialog.dart';
@@ -12,6 +14,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final ProductProvider productProvider = Provider.of<ProductProvider>(context);
+    final String user = Provider.of<LoginProvider>(context, listen: false).selectedUser;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -31,7 +34,7 @@ class HomeScreen extends StatelessWidget {
 
             const SizedBox(height: 50,),
 
-            _MenuButton(
+            if (user == 'Administrador') _MenuButton(
               title: 'Registrar Pedido',
               onPressed: () async => await navigateIfConnected(context, 'order'),
             ),
@@ -39,7 +42,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 50,),
 
 
-            _MenuButton(
+            if (user == 'Administrador') _MenuButton(
               title: 'Ver Productos',
               onPressed: () async => await navigateIfConnected(context, 'products'),
             )

@@ -10,7 +10,9 @@ class SelectProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    List<Product> registeredProducts = ModalRoute.of(context)!.settings.arguments as List<Product>;
+    Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    List<Product> registeredProducts = args['list'];
+    bool showZeros = args['showZeros'];
 
     return Scaffold(
       appBar: AppBar(
@@ -22,7 +24,9 @@ class SelectProductScreen extends StatelessWidget {
           return [
             ...lista.where((product) {
             final int code = product.code;
-            return product.quantity!=0 && [...registeredProducts.where((p) => p.code == code)].isEmpty;
+            return (showZeros) 
+              ? [...registeredProducts.where((p) => p.code == code)].isEmpty
+              : product.quantity!=0 && [...registeredProducts.where((p) => p.code == code)].isEmpty;
           })];
         },
         returnProduct: true,

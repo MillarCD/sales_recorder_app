@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class LoginProvider extends ChangeNotifier {
@@ -19,18 +18,18 @@ class LoginProvider extends ChangeNotifier {
   }
 
   String _selectedUser = 'Administrador';
-  set selectedUser(String newUser) {
+  set selectedUser(String newUser) {    
     _selectedUser = newUser;
     notifyListeners();
   }
   String get selectedUser => _selectedUser;
 
-
-
   bool checkPassword(String pwd) {
     // TODO: sha-256
-    if (pwd == _users[_selectedUser]) return true;
-    return false;
+    if (pwd != _users[_selectedUser]) return false;
+
+    _isSignIn = true;
+    return true;
   }
   
 }

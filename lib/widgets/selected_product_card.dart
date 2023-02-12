@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:register_sale_app/models/product.dart';
 import 'package:register_sale_app/providers/sale_provider.dart';
+import 'package:register_sale_app/utils/utils.dart';
 import 'package:register_sale_app/widgets/product_quantity.dart';
 
 class SelectedProductCard extends StatelessWidget {
@@ -33,8 +34,8 @@ class SelectedProductCard extends StatelessWidget {
                     color: Theme.of(context).colorScheme.secondaryContainer,
                   )),
                   if (product.brand != null) Text(product.brand!, style: const TextStyle(fontSize: 17)),
-                  Text('\$${product.price.toString()}', style: const TextStyle(fontSize: 17)),
-                  Text('Total: \$${quantity * product.price}', style: const TextStyle(fontSize: 17)),
+                  Text('\$${printIntPrice(product.price)}', style: const TextStyle(fontSize: 17)),
+                  Text('Total: \$${printIntPrice(quantity * product.price)}', style: const TextStyle(fontSize: 17)),
                 ],
               ),
             ),

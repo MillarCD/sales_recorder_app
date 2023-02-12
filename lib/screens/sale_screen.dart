@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:register_sale_app/models/product.dart';
 import 'package:register_sale_app/providers/sale_provider.dart';
+import 'package:register_sale_app/utils/utils.dart';
 import 'package:register_sale_app/widgets/add_product_button.dart';
 import 'package:register_sale_app/widgets/dismissible_background.dart';
 import 'package:register_sale_app/widgets/register_dialog.dart';
@@ -64,7 +65,10 @@ class SaleScreen extends StatelessWidget {
                         onPressed: () async {
                           final Product? product = await Navigator.pushNamed(
                             context, 'select_product',
-                            arguments: saleProvider.getProducts()
+                            arguments: {
+                              'list': saleProvider.getProducts(),
+                              'showZeros': false,
+                            }
                           ) as Product?;
                           if (product!=null) saleProvider.addNewProduct(product);
                         },
@@ -108,7 +112,7 @@ class SaleScreen extends StatelessWidget {
                   
                       final bool? res = await showDialog(
                         context: context,
-                        builder: (context) => RegisterDialog(title: '¿Registrar venta?', content: 'Total: $total'),
+                        builder: (context) => RegisterDialog(title: '¿Registrar venta?', content: 'Total: ${printIntPrice(total)}'),
                       );
         
                       if (res == null || !res)  return;

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:register_sale_app/models/product.dart';
 import 'package:register_sale_app/providers/order_provider.dart';
+import 'package:register_sale_app/utils/utils.dart';
 import 'package:register_sale_app/widgets/product_quantity.dart';
 
 class OrderedProductCard extends StatelessWidget {
@@ -35,7 +36,7 @@ class OrderedProductCard extends StatelessWidget {
                   )),
                   if (product.brand != null) Text(product.brand!, style: const TextStyle(fontSize: 17)),
                   Text('\$${price.toString()}', style: const TextStyle(fontSize: 17)),
-                  Text('Total: \$${quantity * price}', style: const TextStyle(fontSize: 17)),
+                  Text('Total: \$${printDoublePrice(quantity * price)}', style: const TextStyle(fontSize: 17)),
                 ],
               ),
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:register_sale_app/models/product.dart';
+import 'package:register_sale_app/utils/utils.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -38,7 +39,7 @@ class ProductCard extends StatelessWidget {
               flex: 1,
               child: Column(
                 children: [
-                  Text('\$${product.price}', style: TextStyle(
+                  Text('\$${printIntPrice(product.price)}', style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.secondaryContainer,

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:register_sale_app/models/product.dart';
 import 'package:register_sale_app/providers/order_provider.dart';
+import 'package:register_sale_app/utils/utils.dart';
 import 'package:register_sale_app/widgets/add_product_button.dart';
 import 'package:register_sale_app/widgets/dismissible_background.dart';
 import 'package:register_sale_app/widgets/form_dialog.dart';
@@ -74,7 +75,10 @@ class OrderScreen extends StatelessWidget {
               onPressed: () async {
                 final Product? product = await Navigator.pushNamed(
                   context, 'select_product',
-                  arguments: orderProvider.getProducts()
+                  arguments: {
+                    'list': orderProvider.getProducts(),
+                    'showZeros': true,
+                  }
                 ) as Product?;
                 if (product==null) return;
               
@@ -143,7 +147,7 @@ class OrderScreen extends StatelessWidget {
                 scaffoldMessenger(const SnackBar(content: Text('Pedido registrado'),));
               },
 
-              child: Text('Registrar Pedido (\$${orderProvider.getTotal()})', style: const TextStyle(fontSize: 21))
+              child: Text('Registrar Pedido (\$${printDoublePrice(orderProvider.getTotal() ?? 0)})', style: const TextStyle(fontSize: 21))
             )
           ]
         ),

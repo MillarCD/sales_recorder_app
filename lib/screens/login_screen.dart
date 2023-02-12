@@ -35,7 +35,16 @@ class _Background extends StatelessWidget {
     return Container(
       height: double.infinity,
       width: double.infinity,
-      color: Colors.blue,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Theme.of(context).colorScheme.secondaryContainer,
+            Theme.of(context).colorScheme.secondaryContainer.withAlpha(190)
+          ]
+        )
+      ),
     );
   }
 }
@@ -63,7 +72,7 @@ class _LoginForm extends StatelessWidget {
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Colors.red,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             child: Form(
               key: formKey,
@@ -86,6 +95,7 @@ class _LoginForm extends StatelessWidget {
                       border: Border.all(),
                       borderRadius: BorderRadius.circular(10)
                     ),
+
                     child: DropdownButton<String>(
                       enableFeedback: true,
                       underline: const SizedBox(),
@@ -93,6 +103,7 @@ class _LoginForm extends StatelessWidget {
                       isExpanded: true,
                       items: [
                         ...loginProvider.getUsers().map((user) {
+
                           return DropdownMenuItem(
                             value: user,
                             child: Text(user),
@@ -141,11 +152,10 @@ class _LoginForm extends StatelessWidget {
                 style: TextStyle(fontSize: 21),
               ),
               onPressed: () {
-                print('Iniciar secion');
                 if (formKey.currentState?.validate() ?? false) {
-                  loginProvider.isSignIn = true;
                   // TODO: navegar a home screen
-                  
+                  print('login successfully');
+                  Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false);
                 }
               }
             ),
