@@ -142,17 +142,6 @@ class CreateProductScreen extends StatelessWidget {
   InputDecoration textFormFieldDecoration(Color borderColor, String hintText) {
     return InputDecoration(
       labelText: hintText,
-      labelStyle: const TextStyle(color: Colors.black),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10), 
-      ),
-
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10), 
-        borderSide: BorderSide(color: borderColor)
-      )
-
-
     );
   }
 }

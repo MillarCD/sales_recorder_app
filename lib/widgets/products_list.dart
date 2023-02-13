@@ -85,15 +85,10 @@ class _SearchBar extends StatelessWidget {
     final Color secondaryColor = Theme.of(context).colorScheme.secondary;
     
     return TextFormField(
+      cursorColor: Theme.of(context).colorScheme.secondary,
       decoration: InputDecoration(
         hintText: 'Buscar Producto',
-        hintStyle: TextStyle(color:secondaryColor),
         prefixIcon: Icon(Icons.search, color: secondaryColor),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
-        ),
-        filled: true,
       ),
       onChanged: onChanged,
     );

@@ -34,12 +34,6 @@ class FormDialog extends StatelessWidget {
               keyboardType: keyboardType,
               decoration: InputDecoration(
                 hintText: hintText,
-                hintStyle: TextStyle(color:Theme.of(context).colorScheme.secondary),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
               ),
               validator: validate,
             ),

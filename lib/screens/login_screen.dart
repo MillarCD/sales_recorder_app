@@ -40,8 +40,8 @@ class _Background extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Theme.of(context).colorScheme.secondaryContainer,
-            Theme.of(context).colorScheme.secondaryContainer.withAlpha(190)
+            Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.5),
+            Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.1)
           ]
         )
       ),
@@ -72,7 +72,7 @@ class _LoginForm extends StatelessWidget {
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.primary,
             ),
             child: Form(
               key: formKey,
@@ -126,7 +126,6 @@ class _LoginForm extends StatelessWidget {
                     obscureText: true,
                     decoration: const InputDecoration(
                       labelText: 'Contraseña',
-                      border: OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value == '') return 'Ingrese una contraseña';
@@ -153,8 +152,6 @@ class _LoginForm extends StatelessWidget {
               ),
               onPressed: () {
                 if (formKey.currentState?.validate() ?? false) {
-                  // TODO: navegar a home screen
-                  print('login successfully');
                   Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false);
                 }
               }

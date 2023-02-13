@@ -116,12 +116,10 @@ class OrderScreen extends StatelessWidget {
         
             MaterialButton(
               minWidth: double.infinity,
-              height: size.height * .1,
+              height: 50,
               color: Theme.of(context).colorScheme.secondary,
               onPressed: (orderProvider.products.isEmpty) ? null : () async {
-                print('[SALE SCREEN] registrar venta');
                 final scaffoldMessenger = ScaffoldMessenger.of(context).showSnackBar;
-                // TODO: show dialog to enter proovedor
                 final double? total = orderProvider.getTotal();
                 if (total == null) return;
             

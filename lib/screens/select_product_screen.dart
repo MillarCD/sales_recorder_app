@@ -16,8 +16,7 @@ class SelectProductScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Selecciona un producto'),
-        elevation: 0,
+        title: const Text('Selecciona un producto'),      
       ),
       body: ProductsList(
         filter: (lista) {
