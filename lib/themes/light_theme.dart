@@ -7,7 +7,7 @@ class LightTheme {
 
   static const Color _secondary = Color.fromRGBO(105, 187, 202, 1); 
   static const Color _secondaryContainer = Color.fromRGBO(25, 162, 200, 1);
-  static const Color _onSecondary = Colors.black;
+  static const Color _onSecondary = Colors.white;
 
   static const Color _background = Color.fromRGBO(239, 239, 239, 1);
 
@@ -62,7 +62,6 @@ class LightTheme {
       selectionColor: _secondary.withOpacity(0.15),
       selectionHandleColor: _secondary,
     ),
-
   );
 
 }

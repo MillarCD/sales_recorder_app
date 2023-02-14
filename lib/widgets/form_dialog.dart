@@ -26,7 +26,6 @@ class FormDialog extends StatelessWidget {
         Container(
           margin: const EdgeInsets.all(10),
           child: Form(
-            autovalidateMode: AutovalidateMode.onUserInteraction,
             key: formKey,
 
             child: TextFormField(
@@ -52,7 +51,9 @@ class FormDialog extends StatelessWidget {
 
             TextButton(
               onPressed: () {
+                print('hello');
                 if (formKey.currentState?.validate() ?? false) {
+                  print('its true');
                   return Navigator.pop(context, controller.text);
                 }
               },

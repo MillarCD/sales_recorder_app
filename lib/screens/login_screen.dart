@@ -35,16 +35,7 @@ class _Background extends StatelessWidget {
     return Container(
       height: double.infinity,
       width: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.5),
-            Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.1)
-          ]
-        )
-      ),
+      color: Theme.of(context).colorScheme.background
     );
   }
 }
@@ -67,74 +58,75 @@ class _LoginForm extends StatelessWidget {
       child: Column(
         children: [
 
-          Container(
+          Card(
             margin: const EdgeInsets.symmetric(horizontal: 10),
-            padding: const EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            child: Form(
-              key: formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-
-                  const Text(
-                    'Iniciar seción',
-                    style: TextStyle(
-                      fontSize: 25,
+            elevation: 3,
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+              
+                    Text(
+                      'Iniciar seción',
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        fontWeight: FontWeight.w500
+                      ),
                     ),
-                  ),
-
-                  const SizedBox(height: 10,),
-    
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                      border: Border.all(),
-                      borderRadius: BorderRadius.circular(10)
+              
+                    const SizedBox(height: 10,),
+                
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(10)
+                      ),
+              
+                      child: DropdownButton<String>(
+                        enableFeedback: true,
+                        underline: const SizedBox(),
+                        borderRadius: BorderRadius.circular(10),
+                        isExpanded: true,
+                        items: [
+                          ...loginProvider.getUsers().map((user) {
+              
+                            return DropdownMenuItem(
+                              value: user,
+                              child: Text(user),
+                            );
+                          })
+                        ],
+              
+                        value: loginProvider.selectedUser,
+                        onChanged: (onChanged) {
+                          if (onChanged == null) return;
+              
+                          loginProvider.selectedUser = onChanged;
+                        }
+                      ),
                     ),
-
-                    child: DropdownButton<String>(
-                      enableFeedback: true,
-                      underline: const SizedBox(),
-                      borderRadius: BorderRadius.circular(10),
-                      isExpanded: true,
-                      items: [
-                        ...loginProvider.getUsers().map((user) {
-
-                          return DropdownMenuItem(
-                            value: user,
-                            child: Text(user),
-                          );
-                        })
-                      ],
-
-                      value: loginProvider.selectedUser,
-                      onChanged: (onChanged) {
-                        if (onChanged == null) return;
-
-                        loginProvider.selectedUser = onChanged;
+              
+                    const SizedBox(height: 30,),
+                
+                    TextFormField(
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        labelText: 'Contraseña',
+                      ),
+                      validator: (value) {
+                        if (value == null || value == '') return 'Ingrese una contraseña';
+                        if (!loginProvider.checkPassword(value)) return 'Contraseña incorrecta';
+                        return null;
                       }
-                    ),
-                  ),
-
-                  const SizedBox(height: 30,),
-    
-                  TextFormField(
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Contraseña',
-                    ),
-                    validator: (value) {
-                      if (value == null || value == '') return 'Ingrese una contraseña';
-                      if (!loginProvider.checkPassword(value)) return 'Contraseña incorrecta';
-                      return null;
-                    }
-                  )
-    
-                ],
+                    )
+                
+                  ],
+                ),
               ),
             )
           ),
@@ -145,10 +137,11 @@ class _LoginForm extends StatelessWidget {
             margin: const EdgeInsets.all(10),
             width: double.infinity,
             height: 50,
-            child: OutlinedButton(
-              child: const Text(
+            child: MaterialButton(
+              color: Theme.of(context).colorScheme.secondary,
+              child: Text(
                 'Iniciar seción',
-                style: TextStyle(fontSize: 21),
+                style: TextStyle(fontSize: 21, color: Theme.of(context).colorScheme.onSecondary),
               ),
               onPressed: () {
                 if (formKey.currentState?.validate() ?? false) {

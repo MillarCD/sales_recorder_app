@@ -39,6 +39,17 @@ class SaleScreen extends StatelessWidget {
         height: double.infinity,
         child: Column(
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Text('¿Pago con tarjeta?'),
+                Switch(
+                  value: saleProvider.isCardPayment,
+                  onChanged: (value) => saleProvider.isCardPayment = value,
+                ),
+              ],
+            ),
+
             Expanded(
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
@@ -92,7 +103,7 @@ class SaleScreen extends StatelessWidget {
 
             MaterialButton(
               minWidth: double.infinity,
-              height: 50,
+              height: 60,
               color: Theme.of(context).colorScheme.secondary,
               onPressed: (saleProvider.products.isEmpty) ? null : () async {
                 print('[SALE SCREEN] registrar venta');
@@ -103,7 +114,7 @@ class SaleScreen extends StatelessWidget {
             
                 final bool? res = await showDialog(
                   context: context,
-                  builder: (context) => RegisterDialog(title: '¿Registrar venta?', content: 'Total: ${printIntPrice(total)}'),
+                  builder: (context) => RegisterDialog(title: '¿Registrar venta?', content: 'Total: \$${printIntPrice(total)}'),
                 );
         
                 if (res == null || !res)  return;

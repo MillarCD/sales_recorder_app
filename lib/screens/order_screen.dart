@@ -83,7 +83,7 @@ class OrderScreen extends StatelessWidget {
                 if (product==null) return;
               
                 double? res = double.tryParse(await showDialog(context: context, builder: (context) {
-                  return enterPriceDialog();
+                  return const _EnterPriceDialog();
                 }) ?? '');
 
                 if (res == null) return;
@@ -102,7 +102,7 @@ class OrderScreen extends StatelessWidget {
                 if (product == null) return;
 
                 double? res = double.tryParse(await showDialog(context: context, builder: (context) {
-                  return enterPriceDialog();
+                  return const _EnterPriceDialog();
                 }) ?? '');
 
                 if (res == null) return;
@@ -116,7 +116,7 @@ class OrderScreen extends StatelessWidget {
         
             MaterialButton(
               minWidth: double.infinity,
-              height: 50,
+              height: 60,
               color: Theme.of(context).colorScheme.secondary,
               onPressed: (orderProvider.products.isEmpty) ? null : () async {
                 final scaffoldMessenger = ScaffoldMessenger.of(context).showSnackBar;
@@ -130,7 +130,7 @@ class OrderScreen extends StatelessWidget {
                       hintText: 'Proveedor',
                       keyboardType: TextInputType.text,
                       validate: (value) {
-                        if (value == null) return 'Debe ingresar un texto valido';
+                        if (value == null || value == '') return 'Debe ingresar un texto valido';
                     
                         return null;
                       },
@@ -153,21 +153,27 @@ class OrderScreen extends StatelessWidget {
     );
   }
 
-    Widget enterPriceDialog() {
-      return FormDialog(
-        title: 'Ingresar Precio',
-        hintText: '\$100',
-        keyboardType: const TextInputType.numberWithOptions(),
-        validate: (value) {
-          if (double.tryParse(value ?? '') == null) {
-            return 'Debe ingresar un numero valido';
-          } else if (double.parse(value!) <= 0) {
-            return 'El precio debe ser mayor a 0';
-          }
-          return null;
-        },
-      );
+}
 
+class _EnterPriceDialog extends StatelessWidget {
+  const _EnterPriceDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FormDialog(
+      title: 'Ingresar Precio (sin impuesto)',
+      hintText: '\$100',
+      keyboardType: const TextInputType.numberWithOptions(),
+      validate: (value) {
+        if (double.tryParse(value ?? '') == null) {
+          return 'Debe ingresar un numero valido';
+        } else if (double.parse(value!) <= 0) {
+          return 'El precio debe ser mayor a 0';
+        }
+        return null;
+      },
+    );
   }
-
 }

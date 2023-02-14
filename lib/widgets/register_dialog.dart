@@ -11,11 +11,11 @@ class RegisterDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(title),
-      content: Text(content),
+      content: Text(content, style: const TextStyle(fontSize: 19)),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context, false),
-          child: Text('cancelar', style: TextStyle(color: Theme.of(context).colorScheme.secondary),),
+          child: Text('Cancelar', style: TextStyle(color: Theme.of(context).colorScheme.secondary),),
         ),
         TextButton(
           onPressed: () => Navigator.pop(context, true),

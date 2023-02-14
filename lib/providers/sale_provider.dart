@@ -7,6 +7,13 @@ class SaleProvider extends ChangeNotifier {
   final Map<Product, int> _products = {};
   Map<Product, int> get products => _products;
 
+  bool _isCardPayment = false;
+  bool get isCardPayment => _isCardPayment;
+  set isCardPayment(bool value) {
+    _isCardPayment = value;
+    notifyListeners();
+  }
+
   bool _isRegistering = false;
   bool get isRegistering => _isRegistering;
 
@@ -84,7 +91,8 @@ class SaleProvider extends ChangeNotifier {
           ...entry.key.toList(),        // code, name, brand, price
           entry.value,                  // quantity
           entry.key.price * entry.value,// total
-          dateTime                      // date
+          dateTime,                     // date
+          (_isCardPayment) ? 1 : 0,     // card payment
         ];
       }
     )];
@@ -100,6 +108,7 @@ class SaleProvider extends ChangeNotifier {
     for (var entry in _products.entries) {
       entry.key.quantity -= entry.value;
     }
+    _isCardPayment = false;
 
     _products.clear();
     _isRegistering = false;
