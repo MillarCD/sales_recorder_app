@@ -64,7 +64,7 @@ class ProductProvider extends ChangeNotifier {
   }
 
   Future<bool> registerProduct(Product newProduct) async {
-    const String sheetName = 'productos_respaldo';
+    const String sheetName = 'productos';
     const String quantityFormule = '''=SUMA(
         SUMA(
           SI.ERROR(

@@ -10,8 +10,8 @@ class LoginProvider extends ChangeNotifier {
   bool get isSignIn => _isSignIn;
 
   final Map<String, String> _users = {
-    'Administrador': 'password',
-    'Vendedor': 'qwerty',
+    'Administrador': 'admin98',
+    'Vendedor': 'seller67',
   };
   List<String> getUsers() {
     return [..._users.keys];

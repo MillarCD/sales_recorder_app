@@ -61,7 +61,10 @@ class OrderProvider extends ChangeNotifier {
   }
 
   Future<bool> registerOrder(String supplier) async {
-    const String sheetName = 'egresos_test'; // TODO: cambiar a hoja real <---
+    const String sheetName = 'egreso';
+    const String nameFormule = '=filter(productos!B2:B,productos!A2:A=INDIRECT("C"&ROW()))';
+    const String brandFormule = '=filter(productos!C2:C,productos!A2:A=INDIRECT("C"&ROW()))';
+
     _isRegistering = true;
     notifyListeners();
     final List<String>? lastRow = await SpreadsheetService.ssService.getLastRow(sheetName, length: 1);
@@ -83,8 +86,6 @@ class OrderProvider extends ChangeNotifier {
     final List<List<dynamic>> order = [
       ...products.entries.map((entry) {
         final int code = entry.key.code;
-        final String name = entry.key.name;
-        final String? brand = entry.key.brand;
         final double price = entry.value[1];
         final int quantity = entry.value[0].round();
 
@@ -92,8 +93,8 @@ class OrderProvider extends ChangeNotifier {
           numOrder,               // N° orden
           supplier,
           code,
-          name,
-          brand,
+          nameFormule,
+          brandFormule,
           price,
           price * withTax,
           quantity,

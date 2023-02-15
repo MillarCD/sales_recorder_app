@@ -51,9 +51,7 @@ class FormDialog extends StatelessWidget {
 
             TextButton(
               onPressed: () {
-                print('hello');
                 if (formKey.currentState?.validate() ?? false) {
-                  print('its true');
                   return Navigator.pop(context, controller.text);
                 }
               },

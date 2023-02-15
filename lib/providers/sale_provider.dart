@@ -67,6 +67,9 @@ class SaleProvider extends ChangeNotifier {
 
   Future<bool> registerSale() async {
     const String sheetName = 'ingresos';
+    const String nameFormule = '=filter(productos!B2:B,productos!A2:A=INDIRECT("B"&ROW()))';
+    const String brandFormule = '=filter(productos!C2:C,productos!A2:A=INDIRECT("B"&ROW()))';
+
     _isRegistering = true;
     notifyListeners();
     final List<String>? lastRow = await SpreadsheetService.ssService.getLastRow(sheetName, length: 1);
@@ -88,7 +91,10 @@ class SaleProvider extends ChangeNotifier {
       ...products.entries.map((entry) {
         return [
           numVenta,                     // N° venta
-          ...entry.key.toList(),        // code, name, brand, price
+          entry.key.code,               // code
+          nameFormule,                  // name
+          brandFormule,                 // brand
+          entry.key.price,              // price
           entry.value,                  // quantity
           entry.key.price * entry.value,// total
           dateTime,                     // date

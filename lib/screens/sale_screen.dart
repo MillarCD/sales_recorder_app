@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'package:register_sale_app/models/product.dart';
@@ -45,7 +46,11 @@ class SaleScreen extends StatelessWidget {
                 const Text('¿Pago con tarjeta?'),
                 Switch(
                   value: saleProvider.isCardPayment,
-                  onChanged: (value) => saleProvider.isCardPayment = value,
+                  onChanged: (value) {
+                    saleProvider.isCardPayment = value;
+                    HapticFeedback.mediumImpact();
+                    
+                  }
                 ),
               ],
             ),
@@ -106,7 +111,6 @@ class SaleScreen extends StatelessWidget {
               height: 60,
               color: Theme.of(context).colorScheme.secondary,
               onPressed: (saleProvider.products.isEmpty) ? null : () async {
-                print('[SALE SCREEN] registrar venta');
                 final scaffoldMessenger = ScaffoldMessenger.of(context).showSnackBar;
 
                 final int? total = saleProvider.getTotal();

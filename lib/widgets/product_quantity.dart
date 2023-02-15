@@ -30,7 +30,6 @@ class ProductQuantity extends StatelessWidget {
             child: IconButton(
               color: Theme.of(context).colorScheme.secondary,
               onPressed: () {
-                print('PRODUCT QUANTITY: se saco un producto');
                 HapticFeedback.mediumImpact();
                 rem();
               },
@@ -46,7 +45,6 @@ class ProductQuantity extends StatelessWidget {
             child: IconButton(
               color: Theme.of(context).colorScheme.secondary,
               onPressed: () {
-                print('PRODUCT QUANTITY: se sumo un producto');
                 HapticFeedback.mediumImpact();
                 add();
               },

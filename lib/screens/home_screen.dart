@@ -18,6 +18,19 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
+
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              Provider.of<LoginProvider>(context, listen: false).isSignIn = false;
+              Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
+            },
+            icon: const Icon( Icons.logout_outlined )
+          )
+        ],
+      ),
+
       body: productProvider.isLoadingProduct
         ? Center(child: CircularProgressIndicator(color: Theme.of(context).colorScheme.secondary))
         : SizedBox(

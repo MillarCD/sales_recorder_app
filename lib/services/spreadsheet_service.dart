@@ -34,7 +34,6 @@ class SpreadsheetService {
 
     _isLoading = false;
     _isConnected = true;
-    print('connected...');
     return true;
   }
 
