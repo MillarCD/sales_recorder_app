@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 import 'package:register_sale_app/providers/login_provider.dart';
 import 'package:register_sale_app/providers/order_provider.dart';
@@ -9,6 +13,11 @@ import 'package:register_sale_app/screens/screens.dart';
 import 'package:register_sale_app/themes/themes.dart';
 
 void main() {
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+    if (kReleaseMode) exit(1);
+  };
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<LoginProvider>(create: (context) => LoginProvider()),
@@ -41,6 +50,7 @@ class MyApp extends StatelessWidget {
         'order': (context) => const OrderScreen(),
         'create_product': (context) => const CreateProductScreen(),
       },
+
     );
   }
 }

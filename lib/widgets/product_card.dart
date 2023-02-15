@@ -47,7 +47,7 @@ class ProductCard extends StatelessWidget {
 
                   Text(
                     'Cantidad: ${product.quantity}',
-                    style: (product.quantity==0) ? const TextStyle(color: Colors.red) : null
+                    style: (product.quantity<=0) ? const TextStyle(color: Colors.red) : null
                   ),
                 ],
               ),

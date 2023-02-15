@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:register_sale_app/models/product.dart';
 import 'package:register_sale_app/providers/products_provider.dart';
 import 'package:register_sale_app/widgets/add_product_button.dart';
+import 'package:register_sale_app/widgets/loading_widget.dart';
+import 'package:register_sale_app/widgets/snack_bar_content.dart';
 
 class CreateProductScreen extends StatelessWidget {
 
@@ -21,8 +23,8 @@ class CreateProductScreen extends StatelessWidget {
     final TextEditingController priceController = TextEditingController();
 
     if (productProvider.isRegistering) {
-      return Scaffold(
-      body: Center(child: CircularProgressIndicator(color: Theme.of(context).colorScheme.secondary)),
+      return const Scaffold(
+      body: LoadingWidget()
     );
     }
 
@@ -119,12 +121,26 @@ class CreateProductScreen extends StatelessWidget {
                         nameController.text = '';
                         brandController.text = '';
                         priceController.text = '';
+
+                        showSnackBar(
+                        const SnackBar(
+                          content: SnackBarContent(
+                            icon: Icons.check_circle_outline,
+                            iconColor: Colors.green,
+                            message: 'Producto registrado'
+                          )
+                        )
+                      );
                         return;
                       }
 
                       showSnackBar(
                         const SnackBar(
-                          content: Text('Error... No se pudo agregar el producto'),                          
+                          content: SnackBarContent(
+                            icon: Icons.cancel_outlined,
+                            iconColor: Colors.red,
+                            message: 'Error... No se pudo agregar el producto'
+                          )
                         )
                       );
                     }
@@ -145,3 +161,4 @@ class CreateProductScreen extends StatelessWidget {
     );
   }
 }
+

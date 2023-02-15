@@ -61,7 +61,7 @@ class OrderProvider extends ChangeNotifier {
   }
 
   Future<bool> registerOrder(String supplier) async {
-    const String sheetName = 'egreso';
+    const String sheetName = 'egresos';
     const String nameFormule = '=filter(productos!B2:B,productos!A2:A=INDIRECT("C"&ROW()))';
     const String brandFormule = '=filter(productos!C2:C,productos!A2:A=INDIRECT("C"&ROW()))';
 

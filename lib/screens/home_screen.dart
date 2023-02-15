@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:register_sale_app/providers/login_provider.dart';
 import 'package:register_sale_app/providers/products_provider.dart';
 import 'package:register_sale_app/services/spreadsheet_service.dart';
+import 'package:register_sale_app/widgets/loading_widget.dart';
 import 'package:register_sale_app/widgets/no_connection_dialog.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -32,7 +33,7 @@ class HomeScreen extends StatelessWidget {
       ),
 
       body: productProvider.isLoadingProduct
-        ? Center(child: CircularProgressIndicator(color: Theme.of(context).colorScheme.secondary))
+        ? const LoadingWidget()
         : SizedBox(
         height: double.infinity,
         width: double.infinity,

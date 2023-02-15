@@ -11,7 +11,7 @@ class SpreadsheetService {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  static const int timeout = 5;
+  static const int timeout = 3;
 
   static final String _spreadsheetId = config['sheetId']!;
 
@@ -49,9 +49,7 @@ class SpreadsheetService {
     final List<List<String>>? rows;
 
     try {
-      rows =  await sheet.values.allRows().timeout(
-        const Duration(seconds: timeout),
-      );
+      rows =  await sheet.values.allRows();
     } catch (e) {
       return null;
     }
@@ -68,9 +66,7 @@ class SpreadsheetService {
     bool res = false;
 
     try {
-      res = await sheet.values.appendRows(values).timeout(
-        const Duration(seconds: timeout),
-      );
+      res = await sheet.values.appendRows(values);
     } catch (e) {
       return false;
     }
@@ -88,9 +84,7 @@ class SpreadsheetService {
     bool res = false;
     
     try {
-      res = await sheet.values.insertValue(value, column: column, row: row).timeout(
-        const Duration(seconds: timeout),
-      );
+      res = await sheet.values.insertValue(value, column: column, row: row);
     } catch (e) {
       return false;
     }
@@ -106,9 +100,7 @@ class SpreadsheetService {
     List<String>? res;
 
     try {
-      res = await sheet.values.lastRow(length: length ?? -1).timeout(
-        const Duration(seconds: timeout),
-      );
+      res = await sheet.values.lastRow(length: length ?? -1);
     } catch (e) {
       return null;
     }

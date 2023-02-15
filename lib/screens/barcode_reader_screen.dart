@@ -13,6 +13,8 @@ class BarcodeReaderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    bool barcodeRead = false;
+
     final MobileScannerController  controller = MobileScannerController(
       /*
       formats: [
@@ -35,7 +37,10 @@ class BarcodeReaderScreen extends StatelessWidget {
             
           if (product == null) return;
 
-          Navigator.pop(context, product);
+          if (!barcodeRead) {
+            Navigator.pop(context, product);
+            barcodeRead = true;
+          }
           
         },
       ),

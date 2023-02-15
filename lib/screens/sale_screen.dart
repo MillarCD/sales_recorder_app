@@ -7,8 +7,10 @@ import 'package:register_sale_app/providers/sale_provider.dart';
 import 'package:register_sale_app/utils/utils.dart';
 import 'package:register_sale_app/widgets/add_product_button.dart';
 import 'package:register_sale_app/widgets/dismissible_background.dart';
+import 'package:register_sale_app/widgets/loading_widget.dart';
 import 'package:register_sale_app/widgets/register_dialog.dart';
 import 'package:register_sale_app/widgets/selected_product_card.dart';
+import 'package:register_sale_app/widgets/snack_bar_content.dart';
 
 class SaleScreen extends StatelessWidget {
 
@@ -22,11 +24,7 @@ class SaleScreen extends StatelessWidget {
     if (saleProvider.isRegistering) {
       return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
-        body: Center(
-          child: CircularProgressIndicator(
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-        )
+        body: const LoadingWidget()
       );
     }
     
@@ -45,11 +43,11 @@ class SaleScreen extends StatelessWidget {
               children: [
                 const Text('¿Pago con tarjeta?'),
                 Switch(
+                  activeColor: Theme.of(context).colorScheme.secondary,
                   value: saleProvider.isCardPayment,
                   onChanged: (value) {
                     saleProvider.isCardPayment = value;
-                    HapticFeedback.mediumImpact();
-                    
+                    HapticFeedback.mediumImpact(); 
                   }
                 ),
               ],
@@ -78,6 +76,8 @@ class SaleScreen extends StatelessWidget {
                 ),
               ),
             ),
+
+            const SizedBox(height: 10,),
         
             AddProductButton(
               title: 'Agregar Producto',
@@ -114,18 +114,37 @@ class SaleScreen extends StatelessWidget {
                 final scaffoldMessenger = ScaffoldMessenger.of(context).showSnackBar;
 
                 final int? total = saleProvider.getTotal();
-                if (total == null) return;
+                if (total == null) {
+                  scaffoldMessenger( noRegister() );
+                  return;
+                }
             
                 final bool? res = await showDialog(
                   context: context,
                   builder: (context) => RegisterDialog(title: '¿Registrar venta?', content: 'Total: \$${printIntPrice(total)}'),
                 );
         
-                if (res == null || !res)  return;
+                if (res == null || !res)  {
+                  scaffoldMessenger( noRegister() );
+                  return;
+                }
+
                 final bool wasRegister = await saleProvider.registerSale();
 
-                if (!wasRegister) return;
-                scaffoldMessenger(const SnackBar(content: Text('Venta registrada'),));
+                if (!wasRegister) {
+                  scaffoldMessenger( noRegister() );
+                  return;
+                }
+
+                scaffoldMessenger(
+                  const SnackBar(
+                    content: SnackBarContent(
+                      icon: Icons.check_circle_outline,
+                      iconColor: Colors.green,
+                      message: 'Venta registrada',
+                    )
+                  )
+                );
               },
 
               child: const Text('Registrar Venta', style: TextStyle(fontSize: 21))
@@ -134,6 +153,16 @@ class SaleScreen extends StatelessWidget {
           ]
         ),
       ),
+    );
+  }
+
+  SnackBar noRegister() {
+    return const SnackBar(
+      content: SnackBarContent(
+      icon: Icons.cancel_outlined,
+      iconColor: Colors.red,
+      message: 'No se pudo registrar la venta',
+      )
     );
   }
 

@@ -7,7 +7,9 @@ import 'package:register_sale_app/utils/utils.dart';
 import 'package:register_sale_app/widgets/add_product_button.dart';
 import 'package:register_sale_app/widgets/dismissible_background.dart';
 import 'package:register_sale_app/widgets/form_dialog.dart';
+import 'package:register_sale_app/widgets/loading_widget.dart';
 import 'package:register_sale_app/widgets/ordered_product_card.dart';
+import 'package:register_sale_app/widgets/snack_bar_content.dart';
 
 class OrderScreen extends StatelessWidget {
 
@@ -22,11 +24,7 @@ class OrderScreen extends StatelessWidget {
     if (orderProvider.isRegistering) {
       return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
-        body: Center(
-          child: CircularProgressIndicator(
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-        )
+        body: const LoadingWidget()
       );
     }
     
@@ -121,7 +119,10 @@ class OrderScreen extends StatelessWidget {
               onPressed: (orderProvider.products.isEmpty) ? null : () async {
                 final scaffoldMessenger = ScaffoldMessenger.of(context).showSnackBar;
                 final double? total = orderProvider.getTotal();
-                if (total == null) return;
+                if (total == null) {
+                  scaffoldMessenger( noRegister() );
+                  return;
+                }
             
 
                 String? res = await showDialog(context: context, builder: (context) {
@@ -136,13 +137,29 @@ class OrderScreen extends StatelessWidget {
                       },
                     );
                 });
+
         
-                if (res == null)  return;
+                if (res == null)  {
+                  scaffoldMessenger( noRegister() );
+                  return;
+                }
 
                 final bool wasRegister = await orderProvider.registerOrder(res);
 
-                if (!wasRegister) return;
-                scaffoldMessenger(const SnackBar(content: Text('Pedido registrado'),));
+                if (!wasRegister) {
+                  scaffoldMessenger( noRegister() );
+                  return;
+                }
+
+                scaffoldMessenger(
+                  const SnackBar(
+                    content: SnackBarContent(
+                      icon: Icons.check_circle_outline,
+                      iconColor: Colors.green,
+                      message: 'Pedido registrado',
+                    )
+                  )
+                );
               },
 
               child: Text('Registrar Pedido (\$${printDoublePrice(orderProvider.getTotal() ?? 0)})', style: const TextStyle(fontSize: 21))
@@ -150,6 +167,16 @@ class OrderScreen extends StatelessWidget {
           ]
         ),
       ),
+    );
+  }
+
+  SnackBar noRegister() {
+    return const SnackBar(
+      content: SnackBarContent(
+      icon: Icons.cancel_outlined,
+      iconColor: Colors.red,
+      message: 'No se pudo registrar el pedido',
+      )
     );
   }
 
