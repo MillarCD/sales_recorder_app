@@ -42,6 +42,7 @@ class HomeScreen extends StatelessWidget {
           children: [
             _MenuButton(
               title: 'Registrar Venta',
+              icon: Icons.moving_outlined,
               onPressed: () async => navigateIfConnected(context, 'sale'),
             ),
 
@@ -49,6 +50,7 @@ class HomeScreen extends StatelessWidget {
 
             if (user == 'Administrador') _MenuButton(
               title: 'Registrar Pedido',
+              icon: Icons.cloud_upload_outlined,
               onPressed: () async => await navigateIfConnected(context, 'order'),
             ),
 
@@ -57,6 +59,7 @@ class HomeScreen extends StatelessWidget {
 
             if (user == 'Administrador') _MenuButton(
               title: 'Ver Productos',
+              icon: Icons.paste_rounded,
               onPressed: () async => await navigateIfConnected(context, 'products'),
             )
           ],
@@ -86,10 +89,12 @@ class _MenuButton extends StatelessWidget {
   const _MenuButton({
     Key? key,
     required this.title,
+    required this.icon,
     this.onPressed
   }) : super(key: key);
 
   final String title;
+  final IconData  icon;
   final void Function()? onPressed;
 
   @override
@@ -103,7 +108,18 @@ class _MenuButton extends StatelessWidget {
       child: MaterialButton(
         color: Theme.of(context).colorScheme.secondary,
         onPressed: onPressed,
-        child: Text(title, style: const TextStyle(fontSize: 21))
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const SizedBox(width: 10,),
+
+            Icon( icon, color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.5), ),
+            
+            const SizedBox(width: 50,),
+
+            Text(title, style: TextStyle(fontSize: 21, color: Theme.of(context).colorScheme.onSecondary,))
+          ]
+        ),
       ),
     );
   }
