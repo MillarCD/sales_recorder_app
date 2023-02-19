@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.diegomillar.register_sale_app">
    <application
-        android:label="Reven"
+        android:label="STYGI"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
