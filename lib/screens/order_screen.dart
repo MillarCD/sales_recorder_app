@@ -44,7 +44,7 @@ class OrderScreen extends StatelessWidget {
                 child: Column(
                   children: [              
                     ...orderProvider.products.entries.map((MapEntry<Product, List<double>> entry) {
-
+                      
                       return Dismissible(
                         key: UniqueKey(),
                         background: const DismissibleBackGround(alignment: Alignment.centerLeft),
@@ -80,13 +80,13 @@ class OrderScreen extends StatelessWidget {
                 ) as Product?;
                 if (product==null) return;
               
-                double? res = double.tryParse(await showDialog(context: context, builder: (context) {
+                Map<String, dynamic>? res = await showDialog(context: context, builder: (context) {
                   return const _EnterPriceDialog();
-                }) ?? '');
+                });
 
                 if (res == null) return;
                 
-                orderProvider.addNewProduct(product, res);
+                orderProvider.addNewProduct(product, res['price'], res['quantity']);
 
               }
             ),
@@ -99,13 +99,13 @@ class OrderScreen extends StatelessWidget {
                 final Product? product = await Navigator.pushNamed(context, 'barcode_reader') as Product?;
                 if (product == null) return;
 
-                double? res = double.tryParse(await showDialog(context: context, builder: (context) {
+                Map<String, dynamic>? res = await showDialog(context: context, builder: (context) {
                   return const _EnterPriceDialog();
-                }) ?? '');
+                });
 
                 if (res == null) return;
                 
-                orderProvider.addNewProduct(product, res);
+                orderProvider.addNewProduct(product, res['price'], res['quantity']);
 
               },
             ),
@@ -124,27 +124,34 @@ class OrderScreen extends StatelessWidget {
                   return;
                 }
             
-
-                String? res = await showDialog(context: context, builder: (context) {
+                Map<String, dynamic>? res = await showDialog(context: context, builder: (context) {
+                    String supplier = '';
+                    
                     return FormDialog(
                       title: 'Ingrese un proveedor para registrar pedido',
-                      hintText: 'Proveedor',
-                      keyboardType: TextInputType.text,
-                      validate: (value) {
-                        if (value == null || value == '') return 'Debe ingresar un texto valido';
-                    
-                        return null;
-                      },
+                      ifIsValidForm: () => Navigator.pop(context, {'supplier': supplier}),
+           
+                      children: [
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            hintText: 'Prooveedor',
+                          ),
+                          validator: (value) {
+                            if (value == null || value == '') return 'Debe ingresar un texto valido';
+
+                            supplier = value;
+                            return null;
+                          },
+                        ),
+                      ],
                     );
                 });
-
-        
                 if (res == null)  {
                   scaffoldMessenger( noRegister() );
                   return;
                 }
 
-                final bool wasRegister = await orderProvider.registerOrder(res);
+                final bool wasRegister = await orderProvider.registerOrder(res['supplier']);
 
                 if (!wasRegister) {
                   scaffoldMessenger( noRegister() );
@@ -189,18 +196,57 @@ class _EnterPriceDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int quantity = 0;
+    double price = 0;
+
     return FormDialog(
       title: 'Ingresar Precio (sin impuesto)',
-      hintText: '\$100',
-      keyboardType: const TextInputType.numberWithOptions(),
-      validate: (value) {
-        if (double.tryParse(value ?? '') == null) {
-          return 'Debe ingresar un numero valido';
-        } else if (double.parse(value!) <= 0) {
-          return 'El precio debe ser mayor a 0';
-        }
-        return null;
-      },
+
+      ifIsValidForm: () => Navigator.pop(context, {'price': price, 'quantity': quantity}),
+
+      children: [
+
+        TextFormField(
+          decoration: const InputDecoration(
+            hintText: 'Precio'
+          ),
+          keyboardType: const TextInputType.numberWithOptions(),
+          validator: (value) {
+            double? v;
+
+            if ((v = double.tryParse(value ?? '')) == null) {
+              return 'Debe ingresar un numero valido';
+            } else if (v! <= 0) {
+              return 'El precio debe ser mayor a 0';
+            }
+
+            price = v;
+            return null;
+          },
+        ),
+
+        const SizedBox(height: 10,),
+
+        TextFormField(
+          decoration: const InputDecoration(
+            hintText: 'Cantidad'
+          ),
+          keyboardType: const TextInputType.numberWithOptions(),
+          validator: (value) {
+            int? v;
+
+            if ((v = int.tryParse(value ?? '')) == null) {
+              return 'Debe ingresar un numero valido';
+            } else if (v! <= 0) {
+              return 'La cantidad debe ser mayor a 0';
+            }
+
+            quantity = v;
+            return null;
+          },
+        ),
+
+      ],
     );
   }
 }

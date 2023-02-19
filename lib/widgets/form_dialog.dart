@@ -4,21 +4,18 @@ class FormDialog extends StatelessWidget {
   const FormDialog({
     super.key,
     required this.title,
-    required this.hintText, 
-    required this.keyboardType,
-    this.validate
+    required this.children,
+    this.ifIsValidForm,
   });
 
   final String title;
-  final String hintText;
-  final TextInputType keyboardType;
-  final String? Function(String?)? validate;
+  final List<Widget> children;
+  final void Function()? ifIsValidForm;
 
   @override
   Widget build(BuildContext context) {
 
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    TextEditingController controller = TextEditingController();
 
     return SimpleDialog(
       title: Text(title),
@@ -28,13 +25,8 @@ class FormDialog extends StatelessWidget {
           child: Form(
             key: formKey,
 
-            child: TextFormField(
-              controller: controller,
-              keyboardType: keyboardType,
-              decoration: InputDecoration(
-                hintText: hintText,
-              ),
-              validator: validate,
+            child: Column(
+              children: children,
             ),
           ),
         ),
@@ -52,7 +44,8 @@ class FormDialog extends StatelessWidget {
             TextButton(
               onPressed: () {
                 if (formKey.currentState?.validate() ?? false) {
-                  return Navigator.pop(context, controller.text);
+                  if (ifIsValidForm == null) return;
+                  ifIsValidForm!();
                 }
               },
               child: Text('Aceptar', style: TextStyle(color: Theme.of(context).colorScheme.secondary))

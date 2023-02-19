@@ -14,7 +14,6 @@ class CreateProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    final Color secondaryColor = Theme.of(context).colorScheme.secondary;
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
 
     final TextEditingController codeController = TextEditingController();
@@ -46,8 +45,18 @@ class CreateProductScreen extends StatelessWidget {
                 TextFormField(
                   controller: codeController,
                   keyboardType: TextInputType.number,
-                  cursorColor: Theme.of(context).colorScheme.secondary,
-                  decoration: textFormFieldDecoration(secondaryColor, 'Codigo'),
+                  decoration: InputDecoration(
+                    hintText: 'Codigo',
+                    suffixIcon: IconButton(
+                      onPressed: () async {
+                        final String? code = await Navigator.pushNamed(context, 'scan_code') as String?;
+                        if (code==null) return;
+
+                        codeController.text = code;
+                      },
+                      icon: const Icon(Icons.camera_alt_outlined)
+                    )
+                  ),
                   validator: (value) {
                     final int? code;
                     if ((code = int.tryParse(value ?? '')) == null) return 'Debe ingresar un número valido.';
@@ -64,8 +73,9 @@ class CreateProductScreen extends StatelessWidget {
                 TextFormField(
                   controller: nameController,
                   keyboardType: TextInputType.text,
-                  cursorColor: Theme.of(context).colorScheme.secondary,
-                  decoration: textFormFieldDecoration(secondaryColor, 'Nombre del Producto'),
+                  decoration: const InputDecoration(
+                    labelText: 'Nombre del Producto',
+                  ),
                   validator: (value) {
                     if (value == null || value == '') return 'Debe ingresar un nombre';
                     return null;
@@ -77,8 +87,9 @@ class CreateProductScreen extends StatelessWidget {
                 TextFormField(
                   controller: brandController,
                   keyboardType: TextInputType.text,
-                  cursorColor: Theme.of(context).colorScheme.secondary,
-                  decoration: textFormFieldDecoration(secondaryColor, 'Marca'),
+                  decoration: const InputDecoration(
+                    labelText: 'Marca',
+                  ),
                 ),
         
                 const SizedBox(height: 10,),
@@ -86,8 +97,9 @@ class CreateProductScreen extends StatelessWidget {
                 TextFormField(
                   controller: priceController,
                   keyboardType: TextInputType.number,
-                  cursorColor: Theme.of(context).colorScheme.secondary,
-                  decoration: textFormFieldDecoration(secondaryColor, 'Precio'),
+                  decoration: const InputDecoration(
+                    hintText: 'Precio'
+                  ),
                   validator: (value) {
                     final int? price;
                     if ((price = int.tryParse(value ?? '')) == null) return 'Debe ingresar un precio valido';
@@ -155,10 +167,5 @@ class CreateProductScreen extends StatelessWidget {
     );
   }
 
-  InputDecoration textFormFieldDecoration(Color borderColor, String hintText) {
-    return InputDecoration(
-      labelText: hintText,
-    );
-  }
 }
 

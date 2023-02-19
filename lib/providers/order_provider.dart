@@ -23,25 +23,13 @@ class OrderProvider extends ChangeNotifier {
     return total;
   }
 
-  void addOneProduct(Product product) {
-    if (_products[product] == null) return;
-    
-    _products[product]![0] = _products[product]![0] + 1;
-    notifyListeners();
-  }
-  void removeOneProduct(Product product) {
-    if (_products[product] == null || _products[product]![0] < 2) return;
 
-    _products[product]![0] = _products[product]![0] - 1;
+  void addNewProduct(Product product, double price, int quantity) {
+    if (isRegister(product.code)) return;    
+    _products.addAll({product: [quantity.toDouble(), price]});
     notifyListeners();
   }
 
-  void addNewProduct(Product product, double price) {
-    if (isRegister(product.code)) return;
-    
-    _products.addAll({product: [1, price]});
-    notifyListeners();
-  }
   bool deleteProduct(Product product) {
     final List<double>? res = _products.remove(product);
     if(res == null) return false;

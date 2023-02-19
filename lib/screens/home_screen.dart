@@ -58,7 +58,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 50,),
 
 
-            if (user == 'Administrador') _MenuButton(
+            _MenuButton(
               title: 'Ver Productos',
               icon: Icons.paste_rounded,
               onPressed: () async => await navigateIfConnected(context, 'products'),

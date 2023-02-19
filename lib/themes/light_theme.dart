@@ -50,6 +50,7 @@ class LightTheme {
       floatingLabelStyle: const TextStyle(color: _secondary),
       errorStyle: const TextStyle(color: Colors.red),
       prefixIconColor: _secondary,
+      suffixIconColor: _secondary
     ),
 
     appBarTheme: const AppBarTheme(

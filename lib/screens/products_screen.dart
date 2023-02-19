@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:register_sale_app/providers/login_provider.dart';
 import 'package:register_sale_app/widgets/products_list.dart';
 
 class ProductsScreen extends StatelessWidget {
@@ -14,10 +17,11 @@ class ProductsScreen extends StatelessWidget {
       ),
       body: const ProductsList(),
 
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: (Provider.of<LoginProvider>(context, listen: false).selectedUser == 'Administrador') ? FloatingActionButton(
         child: const Icon( Icons.add ),
         onPressed: () => Navigator.pushNamed(context, 'create_product'),
-      ),
+      )
+      : null,
     );
   }
 }

@@ -33,6 +33,10 @@ class ProductProvider extends ChangeNotifier {
     productsList = productsList.sublist(1,productsList.length);
     _products = [...productsList.map((list) => Product.fromList(list))];
    
+    _products.sort((a, b) {
+      return a.name.compareTo(b.name);
+    },);
+
     _isLoadingProducts = false;
     notifyListeners();
     return;
